@@ -16,3 +16,4 @@ define('DB_PASS', $env['DB_PASS']);
 
 define('BASE_PATH', dirname(__DIR__));
 define('BASE_URL',  'http://localhost:81/HeArt/backend/public');
+define('ASSETS_URL', 'http://localhost:81/HeArt/frontend');

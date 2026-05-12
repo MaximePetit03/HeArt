@@ -1,5 +1,4 @@
-<?php
-
+﻿<?php
 class Router
 {
     private array $routes = [];
@@ -7,6 +6,15 @@ class Router
     public function get(string $path, string $controller, string $action): void {
         $this->routes[] = [
             'method'     => 'GET',
+            'path'       => $path,
+            'controller' => $controller,
+            'action'     => $action,
+        ];
+    }
+
+    public function post(string $path, string $controller, string $action): void {
+        $this->routes[] = [
+            'method'     => 'POST',
             'path'       => $path,
             'controller' => $controller,
             'action'     => $action,
@@ -21,7 +29,6 @@ class Router
 
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && $route['path'] === $uri) {
-                require_once BASE_PATH . '/controllers/' . $route['controller'] . '.php';
                 $ctrl = new $route['controller']();
                 $ctrl->{$route['action']}();
                 return;

@@ -1,0 +1,87 @@
+/* ═══════════════════════════════════════════════════════
+   HeArt — responsive.css
+═══════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .albums-grid {
+    columns: 3 220px;
+  }
+  .photos-grid {
+    columns: 2 180px;
+  }
+  .photo-detail {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 1.2rem;
+  }
+  .navbar-links a:not(.btn-nav) {
+    display: none;
+  }
+  .navbar-user {
+    display: none;
+  }
+
+  .main-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .albums-grid {
+    columns: 2 150px;
+    column-gap: 0.8rem;
+  }
+  .photos-grid {
+    columns: 2 130px;
+    column-gap: 0.8rem;
+  }
+
+  .photo-detail {
+    grid-template-columns: 1fr;
+  }
+  .photo-sidebar {
+    position: static;
+  }
+
+  .auth-card {
+    padding: 2.2rem 1.6rem;
+  }
+
+  .album-form,
+  .photo-upload-form {
+    padding: 1.6rem 1.2rem;
+  }
+
+  .visibility-options {
+    flex-direction: column;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  .albums-toolbar {
+    flex-direction: column;
+  }
+  .search-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .albums-grid {
+    columns: 1;
+  }
+  .photos-grid {
+    columns: 1;
+  }
+  .navbar-brand {
+    font-size: 1.4rem;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
+}

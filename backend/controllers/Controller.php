@@ -2,9 +2,9 @@
 abstract class Controller {
     protected function render(string $view, array $data = []): void {
         extract($data); // ['album' => $album] devient $album dans la vue
-        require_once BASE_PATH . '/views/layout/header.php';
-        require_once BASE_PATH . '/views/' . $view . '.php';
-        require_once BASE_PATH . '/views/layout/footer.php';
+        require_once BASE_PATH . '/views/layout/header.phtml';
+        require_once BASE_PATH . '/views/' . $view . '.phtml';
+        require_once BASE_PATH . '/views/layout/footer.phtml';
     }
 
     protected function redirect(string $url): void {
