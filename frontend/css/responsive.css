@@ -1,8 +1,11 @@
-/* ═══════════════════════════════════════════════════════
-   HeArt — responsive.css
-═══════════════════════════════════════════════════════ */
+/* ===================================
+HeArt — responsive.css
+md = 768px   lg = 1024px   sm = 640px
+====================================== */
 
+/* -- lg ≤ 1024px (Tablette & Mobile) -- */
 @media (max-width: 1024px) {
+  /* Grilles existantes */
   .albums-grid {
     columns: 3 220px;
   }
@@ -12,76 +15,155 @@
   .photo-detail {
     grid-template-columns: 1fr 320px;
   }
+
+  /* === NOUVEAU MENU RESPONSIVE === */
+  .navbar {
+    position: relative;
+    display: flex;
+    justify-content: flex-end; /* Pousse le burger tout à droite */
+    align-items: center;
+    padding: 1rem 1.5rem;
+  }
+
+  /* Titre au centre exact de la nav */
+  .navbar .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+  }
+
+  /* Afficher l'icône du menu burger */
+  .burger-menu-btn {
+    display: block !important;
+    font-size: 1.75rem;
+    cursor: pointer;
+    z-index: 1000;
+    color: inherit; /* S'adapte à ta couleur de texte */
+  }
+
+  /* Menu déroulant (caché par défaut) */
+  .navbar-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff; /* Ajuste si tu as un mode sombre (ex: var(--bg-color)) */
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    gap: 1.5rem;
+  }
+
+  /* Quand la checkbox est cochée, on affiche le menu */
+  .burger-checkbox:checked ~ .navbar-links {
+    display: flex;
+  }
+
+  /* S'assurer que tous les éléments sont visibles à l'intérieur */
+  .navbar-links a,
+  .navbar-user {
+    display: block !important; /* Écrase d'éventuelles vieilles règles */
+  }
+
+  /* Bonus : Change l'icône burger en croix quand le menu est ouvert */
+  .burger-checkbox:checked ~ .burger-menu-btn i::before {
+    content: "\f00d"; /* Code Unicode FontAwesome de 'fa-xmark' */
+  }
 }
 
+/* -- md ≤ 768px (Mobile) -- */
 @media (max-width: 768px) {
   .navbar {
-    padding: 0 1.2rem;
-  }
-  .navbar-links a:not(.btn-nav) {
-    display: none;
-  }
-  .navbar-user {
-    display: none;
+    padding: 0.75rem 1rem;
   }
 
   .main-content {
-    padding: 1.5rem 1rem;
+    padding: 1.25rem 1rem;
   }
 
+  /* Grilles */
   .albums-grid {
     columns: 2 150px;
-    column-gap: 0.8rem;
+    column-gap: 0.75rem;
   }
   .photos-grid {
     columns: 2 130px;
-    column-gap: 0.8rem;
+    column-gap: 0.75rem;
   }
 
+  /* Photo détail empilé */
   .photo-detail {
     grid-template-columns: 1fr;
   }
   .photo-sidebar {
     position: static;
+    top: auto;
   }
 
-  .auth-card {
-    padding: 2.2rem 1.6rem;
+  /* Auth (MODIFIÉ ICI) */
+  .auth-card,
+  .auth-container {
+    padding: 2rem 1.5rem;
+    margin: 2rem auto;
   }
 
+  /* Formulaires */
   .album-form,
   .photo-upload-form {
-    padding: 1.6rem 1.2rem;
+    padding: 1.5rem 1.25rem;
   }
 
   .visibility-options {
     flex-direction: column;
   }
 
+  /* Page header */
   .page-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.8rem;
+    gap: 0.75rem;
   }
+
+  /* Toolbar */
   .albums-toolbar {
     flex-direction: column;
+    align-items: stretch;
   }
   .search-input {
+    width: 100%;
+    min-width: unset;
+  }
+  .filter-select {
     width: 100%;
   }
 }
 
-@media (max-width: 480px) {
+/* -- sm ≤ 640px -- */
+@media (max-width: 640px) {
   .albums-grid {
     columns: 1;
   }
   .photos-grid {
     columns: 1;
   }
-  .navbar-brand {
+  h1 {
+    font-size: 1.75rem;
+  }
+  .title {
     font-size: 1.4rem;
   }
-  h1 {
-    font-size: 1.8rem;
+  /* Auth */
+  .auth-card,
+  .auth-container {
+    padding: 1.75rem 1.25rem;
+    margin: 1rem auto;
+    border-radius: 8px;
+  }
+  .auth-brand {
+    font-size: 2rem;
   }
 }

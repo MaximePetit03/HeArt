@@ -1,36 +1,47 @@
-/* ═══════════════════════════════════════════════════════
-   HeArt — main.css   |   Thème rouge bold
-═══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+HeArt — main.css   |   Style inspiré Tailwind
+═════════════════════════════════════════════ */
 
-/* ── Variables ─────────────────────────────────────── */
+/* ── Variables ── */
 :root {
+  /* Rouges */
   --red: #e60023;
   --red-dark: #ad081b;
-  --red-light: #ffe0e3;
-  --red-soft: #fff0f1;
-  --black: #111111;
-  --charcoal: #2c2c2c;
-  --gray: #767676;
-  --gray-light: #efefef;
+  --red-light: rgba(230, 0, 35, 0.1);
+  --red-ring: rgba(230, 0, 35, 0.15);
+
+  /* Blancs & fonds */
   --white: #ffffff;
-  --bg: #f9f9f9;
+  --bg: #f9fafb; /* fond de page */
+  --surface: #f3f4f6; /* fond des inputs, hover, badges */
 
-  --font-display: "Syne", sans-serif;
-  --font-body: "Outfit", sans-serif;
+  /* Bordures */
+  --border: #e5e7eb; /* bordures légères */
+  --border-strong: #d1d5db; /* bordures marquées */
 
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  /* Textes */
+  --placeholder: #9ca3af; /* placeholder, icônes discrètes */
+  --text-muted: #6b7280; /* texte secondaire */
+  --text: #374151; /* texte courant */
+  --text-strong: #111827; /* titres, labels, texte important */
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.16);
+  --rounded-sm: 0.375rem;
+  --rounded-md: 0.5rem;
+  --rounded-lg: 1rem;
+  --rounded-full: 9999px;
 
-  --transition: 0.2s ease;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  --transition: 0.15s ease;
 }
 
-/* ── Reset ─────────────────────────────────────────── */
+/* ── Reset ──── */
 *,
 *::before,
 *::after {
@@ -38,18 +49,21 @@
   margin: 0;
   padding: 0;
 }
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
-  font-family: var(--font-body);
   background: var(--bg);
-  color: var(--charcoal);
-  line-height: 1.6;
+  color: var(--text-strong);
+  line-height: 1.625;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  -webkit-font-smoothing: antialiased;
 }
+
 img {
   display: block;
   max-width: 100%;
@@ -59,133 +73,148 @@ a {
   text-decoration: none;
 }
 
-/* ── Typographie ───────────────────────────────────── */
+/* -- Typographie -- */
 h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-display);
-  line-height: 1.15;
   font-weight: 800;
-  color: var(--black);
+  line-height: 1.25;
+  color: var(--text-strong);
 }
 h1 {
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-size: clamp(1.875rem, 4vw, 3rem);
 }
 h2 {
-  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
 }
 h3 {
   font-size: 1.25rem;
 }
 p {
-  font-size: 0.97rem;
-  color: var(--gray);
-  line-height: 1.65;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.625;
 }
 
-/* ── Navbar ────────────────────────────────────────── */
+/* ── Navbar ─── */
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
   height: 64px;
+  padding: 0 1.5rem;
   background: var(--white);
-  border-bottom: 1px solid var(--gray-light);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
 
-.navbar-brand {
-  font-family: var(--font-display);
-  font-size: 1.8rem;
+.title {
+  font-size: 2rem;
   font-weight: 800;
   color: var(--red);
-  letter-spacing: -0.02em;
+  transition: opacity var(--transition);
 }
-.navbar-brand span {
-  color: var(--black);
+.title:hover {
+  transform: scale(102%);
+  transition: var(--transition);
+}
+.title span {
+  color: var(--text-strong);
 }
 
 .navbar-links {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 0.5rem;
 }
+
 .navbar-links a {
-  font-size: 0.92rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--rounded-lg);
+  font-size: 1rem;
   font-weight: 500;
-  color: var(--gray);
-  padding: 0.4rem 0.6rem;
-  border-radius: var(--radius-sm);
-  transition: all var(--transition);
+  color: var(--text);
+  transition: background var(--transition);
 }
+
 .navbar-links a:hover {
-  color: var(--black);
-  background: var(--gray-light);
+  transition: var(--transition);
+  background: var(--surface);
+  color: var(--text-strong);
 }
 
 .btn-nav {
   background: var(--red) !important;
   color: var(--white) !important;
-  padding: 0.5rem 1.2rem !important;
-  border-radius: var(--radius-xl) !important;
+  padding: 0.45rem 1rem !important;
+  border-radius: var(--rounded-full) !important;
   font-weight: 600 !important;
-  transition: background var(--transition) !important;
+  transition:
+    background var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition) !important;
 }
+
 .btn-nav:hover {
-  background: var(--red-dark) !important;
+  transform: scale(102%);
+  filter: brightness(95%);
 }
 
 .navbar-user {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--black);
-  background: var(--red-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.35rem 0.9rem;
-  border-radius: var(--radius-xl);
+  background: var(--surface);
+  border-radius: var(--rounded-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
-/* ── Main ──────────────────────────────────────────── */
+/* ── Main ── */
 .main-content {
   flex: 1;
   width: 100%;
-  max-width: 1320px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  padding: 2rem 1.5rem;
 }
 
-/* ── Footer ────────────────────────────────────────── */
+/* ── Footer ── */
 .footer {
   text-align: center;
-  padding: 1.8rem;
-  border-top: 1px solid var(--gray-light);
-  font-size: 0.82rem;
-  color: var(--gray);
-  font-family: var(--font-body);
+  padding: 1.5rem;
+  border-top: 2px solid rgba(10, 10, 10, 0.935);
+  font-size: 0.8rem;
 }
-.footer span {
+.footer p {
   color: var(--red);
   font-weight: 700;
 }
 
-/* ── Boutons ───────────────────────────────────────── */
+/* ── Boutons ── */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.6rem 1.4rem;
-  border-radius: var(--radius-xl);
-  font-family: var(--font-body);
-  font-size: 0.92rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--rounded-full);
+
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
   transition: all var(--transition);
+  white-space: nowrap;
 }
 .btn-primary {
   background: var(--red);
@@ -194,55 +223,56 @@ p {
 .btn-primary:hover {
   background: var(--red-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(230, 0, 35, 0.35);
 }
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+.btn-secondary:hover {
+  background: var(--border);
+}
+
 .btn-outline {
   background: var(--white);
-  border: 2px solid var(--gray-light);
-  color: var(--charcoal);
+  border: 2px solid var(--border);
+  color: var(--text);
 }
 .btn-outline:hover {
   border-color: var(--red);
   color: var(--red);
 }
+
 .btn-danger {
   background: var(--white);
-  border: 2px solid #fca5a5;
+  border: 2px solid #fecaca;
   color: #dc2626;
 }
 .btn-danger:hover {
   background: #fff5f5;
 }
-.btn-ghost {
-  background: var(--gray-light);
-  color: var(--charcoal);
-}
-.btn-ghost:hover {
-  background: #e0e0e0;
-}
 .btn-sm {
-  padding: 0.35rem 0.9rem;
-  font-size: 0.82rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
 }
 
-/* ── Alertes ───────────────────────────────────────── */
+/* ── Alertes ── */
 .alert {
-  padding: 0.9rem 1.2rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 1.2rem;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--rounded-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
 }
 .alert-error {
   background: #fff5f5;
   color: #dc2626;
-  border: 1.5px solid #fca5a5;
+  border: 1px solid #fecaca;
 }
 .alert-success {
   background: #f0fdf4;
   color: #16a34a;
-  border: 1.5px solid #86efac;
+  border: 1px solid #86efac;
 }

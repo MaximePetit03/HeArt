@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($title ?? 'HeArt') ?></title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- CSS globaux -->
     <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/global.css">
     <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/components.css">
     <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/responsive.css">
 
+    <!-- CSS spécifique -->
     <?php if (isset($extraCss)): ?>
     <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/pages/<?= $extraCss ?>.css">
     <?php endif; ?>
@@ -19,16 +22,34 @@
 <body>
 
     <nav class="navbar">
-        <a href="<?= BASE_URL ?>/" class="navbar-brand">HeArt</a>
+        <a href="<?= BASE_URL ?>/" class="title">
+            He<span>A</span>rt
+        </a>
+
+        <!-- Checkbox et Label pour le Menu Burger (Cachés sur Desktop) -->
+        <input type="checkbox" id="burger-toggle" class="burger-checkbox" style="display: none;">
+        <label for="burger-toggle" class="burger-menu-btn" style="display: none;">
+            <i class="fa-solid fa-bars"></i>
+        </label>
 
         <div class="navbar-links">
             <?php if (isset($_SESSION['user_id'])): ?>
-            <a href="<?= BASE_URL ?>/albums/create">+ Créer</a>
-            <a href="<?= BASE_URL ?>/albums">Mes albums</a>
-            <a href="<?= BASE_URL ?>/logout">Déconnexion</a>
+            <span class="navbar-user">
+                <i class="fa-regular fa-user"></i>
+                <?= htmlspecialchars($_SESSION['username']) ?>
+            </span>
+            <a href="<?= BASE_URL ?>/albums">
+                <i class="fa-regular fa-images"></i> Mes albums
+            </a>
+            <a href="<?= BASE_URL ?>/albums/create" class="btn-nav">
+                <i class="fa-solid fa-plus"></i> Créer
+            </a>
+            <a href="<?= BASE_URL ?>/logout">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion
+            </a>
             <?php else: ?>
             <a href="<?= BASE_URL ?>/login">Connexion</a>
-            <a href="<?= BASE_URL ?>/register">S'inscrire</a>
+            <a href="<?= BASE_URL ?>/register" class="btn-nav">S'inscrire</a>
             <?php endif; ?>
         </div>
     </nav>
