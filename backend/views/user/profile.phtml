@@ -1,0 +1,93 @@
+<main class="profile-container">
+
+    <div class="profile-navigation">
+        <a href="<?= BASE_URL ?>/" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+        </a>
+    </div>
+
+    <section class="profile-preview-card">
+        <label for="avatar_upload" class="avatar-interactive-trigger" title="Changer la photo de profil">
+            <div class="avatar-wrapper">
+                <img src="<?= $user->getProfilePhoto() ? ASSETS_URL . '/uploads/avatars/' . $user->getProfilePhoto() : ASSETS_URL . '/images/default-avatar.png' ?>"
+                    alt="Avatar de <?= htmlspecialchars($user->getUsername()) ?>" class="profile-avatar-big">
+
+                <div class="avatar-overlay">
+                    <i class="fa-solid fa-camera"></i>
+                    <span>MODIFIER</span>
+                </div>
+            </div>
+        </label>
+        <h2 class="profile-username-display"><?= htmlspecialchars($user->getUsername()) ?></h2>
+    </section>
+
+    <header class="profile-header">
+        <h1>Paramètres du compte</h1>
+        <p class="profile-subtitle">Gérez vos informations personnelles</p>
+    </header>
+
+    <?php if (isset($success)): ?>
+    <p class="profile-status success" role="alert"><?= htmlspecialchars($success) ?></p>
+    <?php endif; ?>
+    <?php if (isset($error)): ?>
+    <p class="profile-status error" role="alert"><?= htmlspecialchars($error) ?></p>
+    <?php endif; ?>
+
+    <article class="profile-card">
+        <form action="<?= BASE_URL ?>/profile/update" method="POST" enctype="multipart/form-data" class="profile-form">
+
+            <input type="file" id="avatar_upload" name="avatar" accept="image/png, image/jpeg, image/webp"
+                style="display: none;">
+
+            <fieldset>
+                <legend>Informations personnelles</legend>
+
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" name="username"
+                        value="<?= htmlspecialchars($user->getUsername()) ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($user->getEmail()) ?>">
+                </div>
+            </fieldset>
+
+            <fieldset class="security-section">
+                <legend>Sécurité du compte</legend>
+
+                <div class="form-group">
+                    <label for="current_password">Mot de passe actuel</label>
+                    <input type="password" id="current_password" name="current_password" placeholder="••••••••"
+                        autocomplete="current-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="new_password">Nouveau mot de passe</label>
+                    <input type="password" id="new_password" name="new_password" placeholder="Nouveau mot de passe"
+                        autocomplete="new-password">
+                </div>
+            </fieldset>
+
+            <footer class="form-actions">
+                <button type="submit" class="btn-save">Enregistrer les modifications</button>
+            </footer>
+        </form>
+    </article>
+
+    <aside class="danger-zone" aria-labelledby="danger-zone-title">
+        <header>
+            <h2 id="danger-zone-title">Zone de danger</h2>
+        </header>
+
+        <p>Une fois votre compte supprimé, toutes vos données seront effacées comprenant votre pseudo, mot de passe, vos
+            photos et vos albums.</p>
+
+        <form action="<?= BASE_URL ?>/profile/delete" method="POST"
+            onsubmit="return confirm('Êtes-vous absolument sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+            <button type="submit" class="btn-delete">Supprimer définitivement le compte</button>
+        </form>
+    </aside>
+
+</main>

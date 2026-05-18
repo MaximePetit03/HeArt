@@ -26,7 +26,6 @@
             He<span>A</span>rt
         </a>
 
-        <!-- Checkbox et Label pour le Menu Burger (Cachés sur Desktop) -->
         <input type="checkbox" id="burger-toggle" class="burger-checkbox" style="display: none;">
         <label for="burger-toggle" class="burger-menu-btn" style="display: none;">
             <i class="fa-solid fa-bars"></i>
@@ -34,10 +33,11 @@
 
         <div class="navbar-links">
             <?php if (isset($_SESSION['user_id'])): ?>
-            <span class="navbar-user">
+
+            <a href="<?= BASE_URL ?>/profile" class="navbar-user" title="Accéder aux paramètres du compte">
                 <i class="fa-regular fa-user"></i>
                 <?= htmlspecialchars($_SESSION['username']) ?>
-            </span>
+            </a>
             <a href="<?= BASE_URL ?>/albums">
                 <i class="fa-regular fa-images"></i> Mes albums
             </a>

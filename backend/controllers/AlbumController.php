@@ -1,10 +1,11 @@
 <?php
-class AlbumController extends Controller {
-    private Album $album;
+
+class AlbumController extends AbstractController {
+    private AlbumManager $albumManager;
 
     public function __construct() {
-        require_once BASE_PATH . '/models/Album.php';
-        $this->album = new Album();
+        require_once BASE_PATH . '/managers/AlbumManager.php';
+        $this->albumManager = new AlbumManager();
     }
 
     public function index(): void {
@@ -12,7 +13,7 @@ class AlbumController extends Controller {
             $this->redirect('/login');
         }
 
-        $albums = $this->album->findAll();
+        $albums = $this->albumManager->findAll();
 
         $this->render('albums/index', [
             'title'  => 'Albums - HeArt',

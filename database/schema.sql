@@ -1,5 +1,5 @@
 -- Photos : ajout description, taken_at, user_id
-CREATE TABLE photos (
+CREATE TABLE photo (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title       VARCHAR(100),
     description TEXT,
@@ -13,7 +13,7 @@ CREATE TABLE photos (
 ) ENGINE=InnoDB;
 
 -- Comments : ajout updated_at
-CREATE TABLE comments (
+CREATE TABLE comment (
     id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     content    TEXT NOT NULL,
     user_id    INT UNSIGNED NOT NULL,

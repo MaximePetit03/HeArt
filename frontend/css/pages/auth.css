@@ -17,6 +17,11 @@ HeArt — pages login et register
   box-sizing: border-box;
 }
 
+.required-hint {
+  color: var(--red);
+  font-size: 12px;
+}
+
 .auth-container h1 {
   margin-top: 0;
   margin-bottom: 1.5rem;

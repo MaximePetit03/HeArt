@@ -1,34 +1,52 @@
 <?php
 
-class User extends Model
-{
-    protected string $table = 'users';
+class User extends AbstractModel {
+    protected string $username = '';
+    protected string $email = '';
+    protected string $password = '';
+    protected ?string $profilePhoto = null;
 
-    public function findByEmail(string $email): array|false
-    {
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->execute([':email' => $email]);
-        return $stmt->fetch();
+    public function __construct(
+        string $username = '',
+        string $email = '',
+        string $password = '',
+        ?string $profilePhoto = null
+    ) {
+        $this->username = $username;
+        $this->email = $email;
+        $this->password = $password;
+        $this->profilePhoto = $profilePhoto;
     }
 
-    public function create(string $username, string $email, string $password): void
-    {
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $this->db->prepare("
-            INSERT INTO users (username, email, password)
-            VALUES (:username, :email, :password)
-        ");
-        $stmt->execute([
-            ':username' => $username,
-            ':email'    => $email,
-            ':password' => $hash,
-        ]);
+    public function getUsername(): string {
+        return $this->username;
     }
 
-    public function emailExists(string $email): bool
-    {
-        $stmt = $this->db->prepare("SELECT id FROM users WHERE email = :email");
-        $stmt->execute([':email' => $email]);
-        return (bool) $stmt->fetch();
+    public function setUsername(string $username): void {
+        $this->username = strip_tags(trim($username));
+    }
+
+    public function getEmail(): string {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void {
+        $this->email = strip_tags(trim($email));
+    }
+
+    public function getPassword(): string {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void {
+        $this->password = $password;
+    }
+
+    public function getProfilePhoto(): ?string {
+        return $this->profilePhoto;
+    }
+
+    public function setProfilePhoto(?string $profilePhoto): void {
+        $this->profilePhoto = $profilePhoto ? strip_tags(trim($profilePhoto)) : null;
     }
 }

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class Router
 {
     private array $routes = [];
@@ -23,7 +23,6 @@ class Router
 
     public function dispatch(): void {
         $uri    = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $uri    = str_replace('/HeArt/backend/public', '', $uri);
         $uri    = '/' . trim($uri, '/');
         $method = $_SERVER['REQUEST_METHOD'];
 
