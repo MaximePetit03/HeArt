@@ -167,3 +167,48 @@ md = 768px   lg = 1024px   sm = 640px
     font-size: 2rem;
   }
 }
+
+@media (max-width: 768px) {
+  .create-album-container {
+    margin: 20px 16px;
+    padding: 20px;
+    border-radius: var(--rounded-md); /* Un poil moins arrondi sur mobile */
+  }
+
+  .form-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+    padding-top: 20px;
+  }
+
+  .btn-submit {
+    justify-content: center;
+    padding: 14px;
+  }
+
+  .btn-cancel {
+    text-align: center;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .photos-grid {
+    column-count: 3;
+  }
+}
+@media (max-width: 768px) {
+  .photos-grid {
+    column-count: 2;
+  }
+}
+@media (max-width: 480px) {
+  .photos-grid {
+    column-count: 1;
+  }
+}

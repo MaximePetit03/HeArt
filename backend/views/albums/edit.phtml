@@ -1,0 +1,38 @@
+<div class="edit-album-container js-edit-album-page" data-album-id="<?= (int)$album->getId() ?>">
+
+    <header class="album-page-header">
+        <h1 class="large-title">Modifier : <?= htmlspecialchars($album->getTitle()) ?></h1>
+        <p class="album-meta">Par <span class="username"><?= htmlspecialchars($album->getUsername()) ?></span></p>
+    </header>
+
+    <div class="upload-section">
+        <button type="button" class="upload-dropzone js-upload-dropzone" aria-describedby="upload-instructions">
+            <div class="dropzone-content" id="upload-instructions">
+                <i class="fa-solid fa-cloud-arrow-up plus-icon" aria-hidden="true"></i>
+                <span class="dropzone-title">Glissez vos images ici</span>
+                <span class="dropzone-subtitle">ou <strong>parcourez</strong> vos fichiers locaux</span>
+                <span class="dropzone-muted">Formats acceptés : JPG, JPEG, PNG, WEBP</span>
+            </div>
+        </button>
+        <input type="file" class="photo-upload-input js-photo-upload-input" multiple
+            accept="image/jpeg,image/jpg,image/png,image/webp">
+    </div>
+
+    <div class="photos-grid-container">
+        <div class="photos-grid js-photos-grid">
+            <?php if (!empty($photos)): ?>
+            <?php foreach ($photos as $photo): ?>
+            <div class="photo-card" data-photo-id="<?= (int)$photo['id'] ?>">
+                <img src="/uploads/albums/<?= htmlspecialchars($photo['filename']) ?>" alt="fichier de l'album"
+                    loading="lazy">
+                <button type="button" class="btn-delete-photo js-delete-photo" data-photo-id="<?= (int)$photo['id'] ?>"
+                    aria-label="Supprimer cette photo">
+                    <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                </button>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+
+</div>

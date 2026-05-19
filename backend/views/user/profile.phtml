@@ -9,8 +9,9 @@
     <section class="profile-preview-card">
         <label for="avatar_upload" class="avatar-interactive-trigger" title="Changer la photo de profil">
             <div class="avatar-wrapper">
-                <img src="<?= $user->getProfilePhoto() ? ASSETS_URL . '/uploads/avatars/' . $user->getProfilePhoto() : ASSETS_URL . '/images/default-avatar.png' ?>"
-                    alt="Avatar de <?= htmlspecialchars($user->getUsername()) ?>" class="profile-avatar-big">
+                <img src="/uploads/avatars/default_profile.png"
+                    alt="Avatar de <?= htmlspecialchars($user->getUsername()) ?>"
+                    class="profile-avatar-big js-profile-avatar">
 
                 <div class="avatar-overlay">
                     <i class="fa-solid fa-camera"></i>
@@ -36,8 +37,7 @@
     <article class="profile-card">
         <form action="<?= BASE_URL ?>/profile/update" method="POST" enctype="multipart/form-data" class="profile-form">
 
-            <input type="file" id="avatar_upload" name="avatar" accept="image/png, image/jpeg, image/webp"
-                style="display: none;">
+            <input type="file" id="avatar_upload" name="avatar" accept="image/png, image/jpeg, image/webp">
 
             <fieldset>
                 <legend>Informations personnelles</legend>

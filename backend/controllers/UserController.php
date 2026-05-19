@@ -42,10 +42,10 @@ class UserController extends AbstractController {
 
         if ($error === null) {
             $this->userManager->update(
-                $userId, 
-                $user->getUsername(), 
-                $user->getEmail(), 
-                $user->getPassword(), 
+                $userId,
+                $user->getUsername(),
+                $user->getEmail(),
+                $user->getPassword(),
                 $user->getProfilePhoto()
             );
         }

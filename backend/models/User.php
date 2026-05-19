@@ -9,13 +9,13 @@ class User extends AbstractModel {
     public function __construct(
         string $username = '',
         string $email = '',
-        string $password = '',
-        ?string $profilePhoto = null
-    ) {
-        $this->username = $username;
-        $this->email = $email;
-        $this->password = $password;
-        $this->profilePhoto = $profilePhoto;
+            string $password = '',
+            ?string $profilePhoto = null
+        ) {
+            $this->username = $username;
+            $this->email = $email;
+            $this->password = $password;
+            $this->profilePhoto = $profilePhoto;
     }
 
     public function getUsername(): string {
@@ -48,5 +48,10 @@ class User extends AbstractModel {
 
     public function setProfilePhoto(?string $profilePhoto): void {
         $this->profilePhoto = $profilePhoto ? strip_tags(trim($profilePhoto)) : null;
+    }
+
+    public function getProfilePhotoUrl(): string {
+        $photo = $this->profilePhoto ?: 'default_profile.png';
+        return '/public/uploads/avatars/' . $photo;
     }
 }

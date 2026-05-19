@@ -57,15 +57,15 @@ class AuthController extends AbstractController {
 
         if (empty($username) || empty($email) || empty($password) || empty($confirm)) {
             $error = 'Tous les champs sont obligatoires.';
-        } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = 'Email invalide.';
-        } else if (strlen($password) < 8) {
+        } elseif (strlen($password) < 8) {
             $error = 'Le mot de passe doit faire au moins 8 caractères.';
-        } else if ($password !== $confirm) {
+        } elseif ($password !== $confirm) {
             $error = 'Les mots de passe ne correspondent pas.';
-        } else if ($this->userManager->usernameExists($username)) {
+        } elseif ($this->userManager->usernameExists($username)) {
             $error = 'Ce pseudo est déjà utilisé.';
-        } else if ($this->userManager->emailExists($email)) {
+        } elseif ($this->userManager->emailExists($email)) {
             $error = 'Cet email est déjà utilisé.';
         } else {
             $options = [

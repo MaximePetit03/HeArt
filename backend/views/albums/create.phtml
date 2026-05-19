@@ -1,0 +1,48 @@
+<div class="create-album-container">
+    <div class="form-header">
+        <h1>Créer un nouvel album</h1>
+        <p>Commencez par donner un nom à votre collection. Vous pourrez y ajouter vos photos juste après</p>
+    </div>
+
+    <?php if (!empty($errors)): ?>
+    <div class="alert alert-danger">
+        <ul>
+            <?php foreach ($errors as $error): ?>
+            <li><i class="fa-solid fa-triangle-exclamation"></i> <?= htmlspecialchars($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php endif; ?>
+
+    <form action="<?= BASE_URL ?>/albums/create" method="POST" class="form-heart">
+
+        <div class="form-group">
+            <label for="title-field">Titre de l'album <span class="required">*</span></label>
+            <span class="char-counter js-title-counter" aria-live="polite">0 / 50</span>
+            <input type="text" id="title-field" class="title textarea js-title-field" name="title" maxlength="50"
+                required placeholder="Ex: Mes créations">
+        </div>
+
+        <div class="form-group">
+            <label for="desc-field">Description</label>
+            <span class="char-counter js-desc-counter" aria-live="polite">0 / 500</span>
+            <textarea id="desc-field" class="description textarea js-desc-field" name="description" rows="4"
+                maxlength="500" placeholder="Décrivez cet album en quelques mots"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="visibility">Confidentialité</label>
+            <select id="visibility" name="visibility">
+                <option value="1" selected>Public (Visible par tout le monde)</option>
+                <option value="0">Privé (Visible uniquement par moi)</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">
+                <i class="fa-solid fa-check"></i> Créer l'album
+            </button>
+            <a href="<?= BASE_URL ?>/" class="btn-cancel">Annuler</a>
+        </div>
+    </form>
+</div>

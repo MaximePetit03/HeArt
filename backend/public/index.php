@@ -1,8 +1,8 @@
 <?php
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// 🚀 Démarrage de session en priorité absolue pour Docker
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -45,5 +45,16 @@ $router->get('/logout',     'AuthController',  'logout');
 $router->get('/profile',    'UserController',  'profile');
 $router->post('/profile/update', 'UserController', 'updateProfile');
 $router->post('/profile/delete', 'UserController', 'deleteAccount');
+$router->get('/albums/create',  'AlbumController', 'create');
+$router->post('/albums/create', 'AlbumController', 'create');
+$router->get('/albums/edit',    'AlbumController', 'edit');
+$router->post('/albums/upload-photos', 'AlbumController', 'uploadPhotos');
 
-$router->dispatch();
+try {
+    $router->dispatch();
+} catch (Throwable $e) {
+    echo "<h1>ERREUR CRITIQUE DANS LE ROUTER :</h1>";
+    echo "<pre>" . $e->getMessage() . "</pre>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+    die();
+}

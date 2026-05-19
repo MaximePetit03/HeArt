@@ -1,22 +1,46 @@
 <section class="albums">
-    <h1>Albums</h1>
+    <div class="page-header">
+        <h1>Albums</h1>
+        <?php if (isset($_SESSION['user_id'])): ?>
+        <a href="<?= BASE_URL ?>/albums/create" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Créer un album
+        </a>
+        <?php endif; ?>
+    </div>
 
     <?php if (empty($albums)): ?>
-    <p>Aucun album pour l'instant.</p>
+    <div class="empty-state">
+        <div class="empty-icon">🎨</div>
+        <h2>Aucun album pour l'instant</h2>
+        <p>Crée ton premier album et commence à partager tes photos.</p>
+        <a href="<?= BASE_URL ?>/albums/create" class="btn btn-primary">
+            Créer mon premier album
+        </a>
+    </div>
+
     <?php else: ?>
     <div class="albums-grid">
         <?php foreach ($albums as $album): ?>
-        <div class="album-card">
-            <a href="<?= BASE_URL ?>/albums/show?id=<?= $album['id'] ?>">
-                <h2><?= htmlspecialchars($album['title']) ?></h2>
-                <p><?= htmlspecialchars($album['description']) ?></p>
-            </a>
-        </div>
+        <a href="<?= BASE_URL ?>/albums/edit?id=<?= $album->getId() ?>" class="card">
+            <div class="card-cover-placeholder">🖼️</div>
+            <div class="card-body">
+                <div class="card-title">
+                    <?= htmlspecialchars($album->getTitle()) ?>
+                </div>
+                <div class="card-meta">
+                    <?= $album->getFormattedDate() ?>
+                </div>
+                <span class="badge badge-<?= $album->getVisibility() ?>">
+                    <?= match($album->getVisibility()) {
+                                'public'     => '🌍 Public',
+                                'private'    => '🔒 Privé',
+                                'restricted' => '👥 Restreint',
+                                default      => $album->getVisibility()
+                            } ?>
+                </span>
+            </div>
+        </a>
         <?php endforeach; ?>
     </div>
-    <?php endif; ?>
-
-    <?php if ($this->isLoggedIn()): ?>
-    <a href="<?= BASE_URL ?>/albums/create">Créer un album</a>
     <?php endif; ?>
 </section>

@@ -1,0 +1,176 @@
+/* ==========================================================================
+   1. LAYOUT & CONTAINER
+   ========================================================================== */
+.edit-album-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Style du Header (Inspiré de l'accueil) */
+.album-page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.album-page-header .large-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.album-page-header .album-meta {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.album-page-header .username {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* ==========================================================================
+   2. ZONE D'UPLOAD COMPACTE (STYLE DISCRET AU-DESSUS)
+   ========================================================================== */
+.upload-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 500px; /* Largeur restreinte et élégante */
+  padding: 30px 20px; /* Hauteur réduite, fini le gros bloc de 400px */
+  border: 2px dashed #dadada;
+  border-radius: 20px;
+  background-color: #fafafa;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* États Hover et Drag-over */
+.upload-dropzone:hover {
+  border-color: #e60023; /* Rouge Pinterest au survol */
+  background-color: #fef5f6;
+}
+
+.upload-dropzone.drag-over {
+  border-color: #e60023;
+  background-color: rgba(230, 0, 35, 0.06);
+  transform: scale(1.02);
+}
+
+/* Contenu intérieur du bouton d'upload */
+.dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.plus-icon {
+  font-size: 2rem; /* Taille d'icône harmonieuse */
+  color: #e60023;
+  margin-bottom: 5px;
+}
+
+.dropzone-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.dropzone-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 350px;
+}
+
+.dropzone-muted {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   3. GRILLE DE PHOTOS STYLE PINTEREST (MASONRY)
+   ========================================================================== */
+.photos-grid-container {
+  margin-top: 20px;
+}
+
+.photos-grid {
+  column-count: 4; /* 4 colonnes fluides */
+  column-gap: 20px; /* Alignement parfait des espaces */
+  width: 100%;
+}
+
+/* Les Cartes Photos */
+.photo-card {
+  background-color: #f0f0f0;
+  border-radius: 16px; /* Coins arrondis typiques de Pinterest */
+  overflow: hidden;
+  margin-bottom: 20px; /* Crée l'espace vertical entre les images du flux */
+  break-inside: avoid; /* Empêche les cartes de se briser entre deux colonnes */
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.photo-card:hover {
+  transform: scale(1.02); /* Effet d'interaction discret */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Règle d'or Pinterest : Largeur fixe à 100%, hauteur libre calculée par l'image */
+.photo-card img {
+  width: 100%;
+  height: auto; /* Respecte le ratio vertical ou horizontal d'origine */
+  display: block;
+  object-fit: cover;
+}
+
+/* ==========================================================================
+   4. INTERFACES DE SURVOL (BOUTON SUPPRIMER)
+   ========================================================================== */
+.btn-delete-photo {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: white;
+  color: #333;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.25s ease;
+  z-index: 10;
+}
+
+.btn-delete-photo:hover {
+  background-color: #e60023; /* Rouge écarlate de suppression */
+  color: white;
+}
+
+.photo-card:hover .btn-delete-photo {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.upload-dropzone * {
+  pointer-events: none;
+}

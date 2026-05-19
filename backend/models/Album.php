@@ -3,13 +3,14 @@
 class Album extends AbstractModel {
     protected string $title = '';
     protected string $description = '';
-    protected int $visibility = 1;
+    protected string $visibility = 'public';
     protected ?int $userId = null;
+    protected ?string $username = null;
 
     public function __construct(
         string $title = '',
         string $description = '',
-        int $visibility = 1,
+        string $visibility = 'public',
         ?int $userId = null
     ) {
         $this->title = $title;
@@ -23,7 +24,6 @@ class Album extends AbstractModel {
     }
 
     public function setTitle(string $title): void {
-        // Nettoyage XSS : supprime les balises HTML/Script malveillantes
         $this->title = strip_tags(trim($title));
     }
 
@@ -35,12 +35,13 @@ class Album extends AbstractModel {
         $this->description = strip_tags(trim($description));
     }
 
-    public function getVisibility(): int {
+    public function getVisibility(): string {
         return $this->visibility;
     }
 
-    public function setVisibility(int $visibility): void {
-        $this->visibility = in_array($visibility, [0, 1]) ? $visibility : 0;
+    public function setVisibility($visibility): void {
+        $allowed = ['public', 'private', 'restricted'];
+        $this->visibility = in_array($visibility, $allowed) ? $visibility : 'public';
     }
 
     public function getUserId(): ?int {
@@ -49,5 +50,23 @@ class Album extends AbstractModel {
 
     public function setUserId(?int $userId): void {
         $this->userId = $userId;
+    }
+
+    public function getUsername(): string {
+        return $this->username ?? 'Utilisateur inconnu';
+    }
+
+    public function setUsername(?string $username): void {
+        $this->username = $username;
+    }
+
+    public function getFormattedDate(): string {
+        $date = $this->getCreatedAt();
+        
+        if (!$date) {
+            return date('d/m/Y');
+        }
+        
+        return $date->format('d/m/Y');
     }
 }
