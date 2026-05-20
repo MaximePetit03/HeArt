@@ -177,3 +177,21 @@ PAGE : createAlbum
   color: var(--text-strong);
   background-color: var(--surface);
 }
+
+select[multiple] {
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: var(--rounded-md);
+  width: 25%;
+}
+
+select[multiple] option {
+  padding: 5px;
+}
+
+select[multiple] option:checked {
+  background-color: var(--text-strong);
+  border: 2px solid black;
+  color: white;
+  width: 15%;
+}

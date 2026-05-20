@@ -4,6 +4,10 @@ export class AlbumEditView {
     this.dropZone = document.querySelector(".js-upload-dropzone");
     this.fileInput = document.querySelector(".js-photo-upload-input");
     this.photosGrid = document.querySelector(".js-photos-grid");
+
+    this.albumVisibilitySelect = document.querySelector(
+      ".js-change-album-visibility",
+    );
   }
 
   init() {
@@ -18,6 +22,56 @@ export class AlbumEditView {
     this.albumId = this.pageContainer.dataset.albumId;
 
     this.initEvents();
+    this.initVisibility();
+  }
+
+  initVisibility() {
+    if (this.albumVisibilitySelect) {
+      this.albumVisibilitySelect.addEventListener("change", async (e) => {
+        try {
+          const response = await fetch("/albums/update-visibility", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              albumId: this.albumId,
+              visibility: e.target.value,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            window.location.reload();
+          } else {
+            alert(
+              "Erreur lors de la mise à jour : " +
+                (result.message || "Inconnue"),
+            );
+          }
+        } catch (error) {
+          console.error("Erreur réseau :", error);
+        }
+      });
+    }
+
+    this.photosGrid.addEventListener("click", async (e) => {
+      const toggleBtn = e.target.closest(".js-toggle-visibility");
+      if (toggleBtn) {
+        const photoId = toggleBtn.dataset.photoId;
+        const response = await fetch("/photos/toggle-visibility", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ photoId: photoId }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          const icon = toggleBtn.querySelector("i");
+          icon.classList.toggle("fa-eye");
+          icon.classList.toggle("fa-eye-slash");
+        }
+      }
+    });
   }
 
   initEvents() {
@@ -95,12 +149,15 @@ export class AlbumEditView {
     card.className = "photo-card";
     card.dataset.photoId = photoId;
 
-    card.innerHTML = `
-            <img src="${photoUrl}" alt="Photo de l'album" loading="lazy">
-            <button type="button" class="btn-delete-photo js-delete-photo" data-photo-id="${photoId}" aria-label="Supprimer cette photo">
+    card.innerHTML = `<img src="${photoUrl}" alt="Photo de l'album" loading="lazy">
+        <div class="photo-actions">
+            <button type="button" class="btn-toggle-visibility js-toggle-visibility" data-photo-id="${photoId}">
+                <i class="fa-solid fa-eye" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn-delete-photo js-delete-photo" data-photo-id="${photoId}" aria-label="Supprimer">
                 <i class="fa-solid fa-trash" aria-hidden="true"></i>
             </button>
-        `;
+        </div>`;
 
     this.photosGrid.insertBefore(card, this.photosGrid.firstChild);
   }

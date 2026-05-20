@@ -31,10 +31,28 @@
         </div>
 
         <div class="form-group">
+            <label for="tags">Tags :</label>
+            <select name="tags[]" id="tags" multiple>
+                <?php if (!empty($allTags)): ?>
+                <?php foreach ($allTags as $tag): ?>
+                <option value="<?= $tag->getId() ?>">
+                    <?= htmlspecialchars($tag->getName()) ?>
+                </option>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="visibility">Confidentialité</label>
-            <select id="visibility" name="visibility">
-                <option value="1" selected>Public (Visible par tout le monde)</option>
-                <option value="0">Privé (Visible uniquement par moi)</option>
+            <select name="visibility">
+                <option value="public" <?= (isset($album) && $album->getVisibility() === 'public') ? 'selected' : '' ?>>
+                    Public</option>
+                <option value="private"
+                    <?= (isset($album) && $album->getVisibility() === 'private') ? 'selected' : '' ?>>Privé</option>
+                <option value="restricted"
+                    <?= (isset($album) && $album->getVisibility() === 'restricted') ? 'selected' : '' ?>>Restreint
+                </option>
             </select>
         </div>
 

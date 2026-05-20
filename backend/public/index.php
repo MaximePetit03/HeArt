@@ -48,7 +48,12 @@ $router->post('/profile/delete', 'UserController', 'deleteAccount');
 $router->get('/albums/create',  'AlbumController', 'create');
 $router->post('/albums/create', 'AlbumController', 'create');
 $router->get('/albums/edit',    'AlbumController', 'edit');
+$router->get('/albums/my-albums', 'AlbumController', 'myAlbums');
 $router->post('/albums/upload-photos', 'AlbumController', 'uploadPhotos');
+$router->post('/albums/update-visibility', 'AlbumController', 'updateVisibility');
+$router->post('/photos/toggle-visibility', 'PhotoController', 'toggleVisibility');
+$router->post('/albums/update', 'AlbumController', 'update');
+$router->post('/albums/delete', 'AlbumController', 'delete');
 
 try {
     $router->dispatch();

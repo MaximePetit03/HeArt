@@ -174,3 +174,99 @@
 .upload-dropzone * {
   pointer-events: none;
 }
+/* --- Conteneur du sélecteur --- */
+.album-visibility-selector {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.album-visibility-selector label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* --- Style du Select --- */
+#album-visibility {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  color: #444;
+  background-color: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  cursor: pointer;
+
+  /* Personnalisation de la flèche */
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 10px;
+
+  transition: all 0.3s ease;
+}
+
+#album-visibility:hover {
+  border-color: #bcbcbc;
+}
+
+#album-visibility:focus {
+  outline: none;
+  border-color: #e60023;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* --- Style du bouton Enregistrer --- */
+.btn-primary {
+  display: inline-block;
+  background-color: #e60023;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.1s;
+}
+
+.btn-primary:hover {
+  background-color: #e60023;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.form-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.album-visibility-selector {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.album-visibility-selector select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  width: 100%;
+}
+
+.album-visibility-selector select[multiple] {
+  height: 100px;
+}

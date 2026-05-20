@@ -36,11 +36,13 @@ class PhotoManager extends AbstractManager {
     }
 
     public function findByAlbumId(int $albumId): array {
-        $sql = "SELECT * FROM photo WHERE album_id = :album_id ORDER BY created_at DESC";
-        
-        $query = $this->db->prepare($sql);
-        $query->execute(['album_id' => $albumId]);
-        
+        $query = $this->db->prepare("SELECT id, filename, is_visible FROM photo WHERE album_id = :album_id");
+        $query->execute([':album_id' => $albumId]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function toggleVisibility(int $id): bool {
+        $query = $this->db->prepare("UPDATE photo SET is_visible = NOT is_visible WHERE id = :id");
+        return $query->execute([':id' => $id]);
     }
 }

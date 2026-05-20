@@ -202,11 +202,18 @@ md = 768px   lg = 1024px   sm = 640px
     column-count: 3;
   }
 }
+
 @media (max-width: 768px) {
   .photos-grid {
     column-count: 2;
   }
+
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
+
 @media (max-width: 480px) {
   .photos-grid {
     column-count: 1;

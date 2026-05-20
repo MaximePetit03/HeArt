@@ -1,11 +1,16 @@
 <?php
 
 class Album extends AbstractModel {
-    protected string $title = '';
+    public ?int $id = null;
+    public int $user_id;
+    public string $created_at;
+    public ?string $author_name = null;
+    public ?string $title = null;
     protected string $description = '';
     protected string $visibility = 'public';
     protected ?int $userId = null;
     protected ?string $username = null;
+    private array $tags = [];
 
     public function __construct(
         string $title = '',
@@ -20,7 +25,7 @@ class Album extends AbstractModel {
     }
 
     public function getTitle(): string {
-        return $this->title;
+        return (string)$this->title;
     }
 
     public function setTitle(string $title): void {
@@ -58,6 +63,14 @@ class Album extends AbstractModel {
 
     public function setUsername(?string $username): void {
         $this->username = $username;
+    }
+    
+    public function setTags(array $tags): void {
+        $this->tags = $tags;
+    }
+
+    public function getTags(): array {
+        return $this->tags;
     }
 
     public function getFormattedDate(): string {

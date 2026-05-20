@@ -1,0 +1,67 @@
+<section class="main-content">
+    <div class="page-header">
+        <h1>Mes Albums</h1>
+    </div>
+
+    <?php if (empty($albums)): ?>
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fa-solid fa-folder-open"></i>
+        </div>
+        <h2>Aucun album créé</h2>
+        <p>Commencez à organiser vos photos en créant votre premier album.</p>
+        <a href="<?= BASE_URL ?>/albums/create" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Créer un album
+        </a>
+    </div>
+    <?php else: ?>
+    <div class="albums-grid">
+        <?php foreach ($albums as $album): ?>
+        <div>
+            <form action="<?= BASE_URL ?>/albums/delete" method="POST"
+                onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet album et toutes ses photos ?');"
+                class="delete-album-form">
+                <input type="hidden" name="album_id" value="<?= (int)$album->getId() ?>">
+                <button type="submit" class="btn-delete-small" title="Supprimer l'album">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </form>
+            <a href="<?= BASE_URL ?>/albums/edit?id=<?= $album->getId() ?>" class="card">
+                <div class="card-cover-placeholder">
+                    <i class="fa-regular fa-image"></i>
+                </div>
+                <div class="card-body">
+                    <div class="card-title"><?= htmlspecialchars($album->getTitle()) ?></div>
+                    <div class="card-meta">
+                        <i class="fa-regular fa-calendar"></i> <?= $album->getFormattedDate() ?>
+                    </div>
+                    <span class="badge js-visibility-badge badge-<?= $album->getVisibility() ?>">
+                        <?php
+                        $icons = [
+                                'public'     => '<i class="fa-solid fa-earth-europe"></i>',
+                                'private'    => '<i class="fa-solid fa-lock"></i>',
+                                'restricted' => '<i class="fa-solid fa-user-group"></i>'
+                            ];
+                        echo ($icons[$album->getVisibility()] ?? '') . ' ' . ucfirst($album->getVisibility());
+                    ?>
+                    </span>
+                    <span class="album-tags">
+                        <?php
+                        $tagManager = new TagManager();
+                        $tags = $tagManager->findByAlbumId($album->getId());
+                    ?>
+
+                        <?php foreach ($tags as $tag): ?>
+                        <span class="badge badge-tag">
+                            <i class="fa-solid fa-tag"></i>
+                            <?= htmlspecialchars($tag->getName()) ?>
+                        </span>
+                        <?php endforeach; ?>
+                    </span>
+                </div>
+            </a>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+</section>

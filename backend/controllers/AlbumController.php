@@ -13,21 +13,34 @@ class AlbumController extends AbstractController {
     }
 
     public function index(): void {
-        try {
-            if (!$this->isLoggedIn()) {
-                $this->redirect('/login');
-                return;
-            }
+        $albums = $this->albumManager->findAllPublic();
+        $albums = $this->albumManager->findAllPublic();
+        $tagManager = new TagManager();
 
-            $albums = $this->albumManager->findAll() ?? [];
-            
-            $this->render('albums/index', [
-                'title'  => 'Albums - HeArt',
-                'albums' => $albums,
-            ]);
-        } catch (Exception $e) {
-            die("ERREUR DANS L'INDEX : " . $e->getMessage());
+        foreach ($albums as $album) {
+            $album->setTags($tagManager->findByAlbumId($album->getId()));
         }
+        
+        $this->render('albums/index', [
+            'title'  => 'Explorer - HeArt',
+            'albums' => $albums
+        ]);
+    }
+
+    public function myAlbums(): void {
+        if (!$this->isLoggedIn()) {
+            $this->redirect('/login');
+            return;
+        }
+
+        $userId = (int)$_SESSION['user_id'];
+        $albums = $this->albumManager->findByUserId($userId);
+
+        $this->render('user/userAlbums', [
+            'title'  => 'Mes Albums - HeArt',
+            'albums' => $albums,
+            'extraCss' => 'editAlbum'
+        ]);
     }
 
     public function create(): void {
@@ -37,6 +50,8 @@ class AlbumController extends AbstractController {
         }
 
         $errors = [];
+        $tagManager = new TagManager();
+        $allTags = $tagManager->findAll();
 
         if (!empty($_POST)) {
             $title = trim($_POST['title'] ?? '');
@@ -60,8 +75,13 @@ class AlbumController extends AbstractController {
 
             if (empty($errors)) {
                 $userId = (int)$_SESSION['user_id'];
-
                 $albumId = $this->albumManager->create($title, $description, $visibility, $userId);
+
+                if (!empty($_POST['tags'])) {
+                    foreach ($_POST['tags'] as $tagId) {
+                        $this->albumManager->addTagToAlbum($albumId, (int)$tagId);
+                    }
+                }
 
                 $this->redirect('/albums/edit?id=' . $albumId);
                 return;
@@ -71,6 +91,7 @@ class AlbumController extends AbstractController {
         $this->render('albums/create', [
             'title'    => 'Créer un album - HeArt',
             'errors'   => $errors,
+            'allTags'  => $allTags,
             'extraCss' => 'createAlbum'
         ]);
     }
@@ -83,7 +104,11 @@ class AlbumController extends AbstractController {
 
         $albumId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
         $album = $this->albumManager->findById($albumId);
-
+        $tagManager = new TagManager();
+        $allTags = $tagManager->findAll();
+        $currentTags = $tagManager->findByAlbumId($albumId);
+        $currentTagIds = array_map(fn($t) => $t->getId(), $currentTags);
+        
         if (!$album) {
             $this->redirect('/');
             return;
@@ -98,9 +123,11 @@ class AlbumController extends AbstractController {
 
         $this->render('albums/edit', [
             'title'    => 'Modifier l\'album - HeArt',
-            'extraCss' => 'editAlbum',
             'album'    => $album,
-            'photos'   => $photos
+            'extraCss' => 'editAlbum',
+            'photos'   => $photos,
+            'allTags'  => $allTags,
+            'currentTagIds' => $currentTagIds
         ]);
     }
 
@@ -199,5 +226,66 @@ class AlbumController extends AbstractController {
             ]);
         }
         exit;
+    }
+
+    public function updateVisibility(): void {
+        header('Content-Type: application/json');
+        
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        $albumId = (int)($data['albumId'] ?? 0);
+        $visibility = $data['visibility'] ?? 'public';
+
+        if ($albumId > 0 && $this->isLoggedIn()) {
+            $this->albumManager->updateVisibility($albumId, $visibility);
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Non autorisé ou ID invalide']);
+        }
+        var_dump($data);
+        exit;
+    }
+
+    public function update(): void {
+        if (!$this->isLoggedIn()) {
+            $this->redirect('/login');
+            return;
+        }
+
+        if (!empty($_POST)) {
+            $albumId = (int)($_POST['album_id'] ?? 0);
+            $visibility = $_POST['visibility'] ?? 'public';
+
+            $this->albumManager->updateVisibility($albumId, $visibility);
+            $this->albumManager->removeTagsFromAlbum($albumId);
+            
+            if (!empty($_POST['tags'])) {
+                foreach ($_POST['tags'] as $tagId) {
+                    $this->albumManager->addTagToAlbum($albumId, (int)$tagId);
+                }
+            }
+
+            $this->redirect('/albums/my-albums');
+        }
+    }
+
+    public function delete(): void {
+        if (!$this->isLoggedIn()) {
+            $this->redirect('/login');
+            return;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('/albums/my-albums');
+            return;
+        }
+
+        $albumId = (int)($_POST['album_id'] ?? 0);
+        
+        if ($albumId > 0 && $this->albumManager->isOwner($albumId, $_SESSION['user_id'])) {
+            $this->albumManager->deleteAlbum($albumId);
+        }
+        
+        $this->redirect('/albums/my-albums');
     }
 }
