@@ -54,6 +54,7 @@ $router->post('/albums/update-visibility', 'AlbumController', 'updateVisibility'
 $router->post('/photos/toggle-visibility', 'PhotoController', 'toggleVisibility');
 $router->post('/albums/update', 'AlbumController', 'update');
 $router->post('/albums/delete', 'AlbumController', 'delete');
+$router->post('/photos/delete', 'PhotoController', 'delete');
 
 try {
     $router->dispatch();

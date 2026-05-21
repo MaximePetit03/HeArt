@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="album-visibility-selector">
-                    <label for="tags">Tags :</label>
+                    <label for="tags">Tags de l'album :</label>
                     <select name="tags[]" id="tags" multiple class="form-control">
                         <?php foreach ($allTags as $tag): ?>
                         <option value="<?= $tag->getId() ?>"
@@ -59,13 +59,11 @@
                 <img src="/uploads/albums/<?= htmlspecialchars($photo['filename']) ?>" alt="file" loading="lazy">
 
                 <div class="photo-actions">
-                    <button type="button" class="btn-toggle-visibility js-toggle-visibility"
-                        data-photo-id="<?= (int)$photo['id'] ?>">
+                    <button type="button" class="btn-toggle-visibility" data-photo-id="<?= (int)$photo['id'] ?>">
                         <i
                             class="fa-solid <?= (isset($photo['is_visible']) && $photo['is_visible'] == 1) ? 'fa-eye' : 'fa-eye-slash' ?>"></i>
                     </button>
-                    <button type="button" class="btn-delete-photo js-delete-photo"
-                        data-photo-id="<?= (int)$photo['id'] ?>">
+                    <button type="button" class="btn-delete-photo" data-photo-id="<?= (int)$photo['id'] ?>">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>

@@ -19,4 +19,16 @@ class PhotoController extends AbstractController {
         }
         exit;
     }
+
+    public function delete(): void {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $photoId = (int)($data['photoId'] ?? 0);
+
+        if ($this->photoManager->isOwnerOfPhoto($photoId, $_SESSION['user_id'])) {
+            $this->photoManager->delete($photoId);
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false]);
+        }
+    }
 }

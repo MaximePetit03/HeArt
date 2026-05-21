@@ -159,7 +159,7 @@ class AlbumManager extends AbstractManager {
         $query->execute([':album_id' => $albumId]);
         $filenames = $query->fetchAll(PDO::FETCH_COLUMN);
 
-        $uploadDir = realpath(__DIR__ . '/../../public/uploads/albums/');
+        $uploadDir = realpath(__DIR__ . '/public/uploads/albums/');
 
         foreach ($filenames as $filename) {
             $safeFilename = basename($filename);
