@@ -310,6 +310,7 @@ class AlbumController extends AbstractController {
         $this->render('albums/show', [
             'title'  => $album->getTitle() . ' - HeArt',
             'album'  => $album,
+            'extraCss' => 'detailAlbum',
             'photos' => $photos
         ]);
     }

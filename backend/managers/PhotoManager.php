@@ -7,7 +7,6 @@ class PhotoManager extends AbstractManager {
     public function create(string $filename, int $albumId, int $userId): int {
         $sql = "INSERT INTO photo (
                     title,
-                    description,
                     filename,
                     taken_at,
                     album_id,
@@ -15,7 +14,6 @@ class PhotoManager extends AbstractManager {
                     created_at
                 ) VALUES (
                     :title,
-                    :description,
                     :filename,
                     NULL,
                     :album_id,
@@ -26,7 +24,6 @@ class PhotoManager extends AbstractManager {
         $query = $this->db->prepare($sql);
         $query->execute([
             'title'       => 'Sans titre',
-            'description' => '',
             'filename'    => $filename,
             'album_id'    => $albumId,
             'user_id'     => $userId

@@ -219,3 +219,90 @@ md = 768px   lg = 1024px   sm = 640px
     column-count: 1;
   }
 }
+
+/* ==========================================================================
+   ADAPTATION RESPONSIVE (Réduction fluide des colonnes)
+   ========================================================================== */
+
+/* Écrans larges : 5 colonnes */
+@media (max-width: 1400px) {
+  .photos-grid {
+    column-count: 4;
+  }
+}
+
+/* Écrans moyens : 3 colonnes */
+@media (max-width: 1000px) {
+  .photos-grid {
+    column-count: 3;
+  }
+}
+
+/* Tablettes : 2 colonnes */
+@media (max-width: 700px) {
+  .photos-grid {
+    column-count: 2;
+  }
+  .edit-album-container {
+    padding: 20px 10px;
+  }
+}
+
+/* Mobiles : 1 colonne */
+@media (max-width: 450px) {
+  .photos-grid {
+    column-count: 1;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE FORMULAIRE & HEADER (Sans toucher aux images)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Réduction des marges globales pour gagner de la place */
+  .edit-album-container {
+    padding: 20px 15px;
+  }
+
+  /* Le header devient plus compact */
+  .album-page-header .large-title {
+    font-size: 2rem;
+  }
+
+  /* La zone d'upload devient plus étroite sur mobile */
+  .upload-dropzone {
+    max-width: 100%;
+    padding: 20px 10px;
+  }
+
+  /* Le formulaire passe en colonne unique */
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  /* Les sélecteurs prennent toute la largeur disponible */
+  .album-visibility-selector {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  /* Bouton enregistrer en pleine largeur pour faciliter le clic */
+  .btn-primary {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Ajustement pour les très petits écrans */
+@media (max-width: 480px) {
+  .dropzone-title {
+    font-size: 1rem;
+  }
+
+  .dropzone-subtitle {
+    font-size: 0.8rem;
+  }
+}

@@ -36,5 +36,6 @@ class Router
 
         http_response_code(404);
         echo '<h1>404 - Page introuvable</h1>';
+        echo'<h1><a href="/"> Retour à l\'accueil</h1>';
     }
 }

@@ -4,7 +4,7 @@
     <div class="photos-grid">
         <?php foreach ($photos as $photo): ?>
         <div class="photo-item">
-            <a href="/photos/show?id=<?= $photo->getId() ?>">
+            <a href="<?= BASE_URL ?>/photos/show?id=<?= $photo->getId() ?>">
                 <img src="/uploads/albums/<?= htmlspecialchars($photo->getFilename()) ?>" alt="file">
             </a>
         </div>

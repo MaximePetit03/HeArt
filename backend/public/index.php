@@ -56,8 +56,7 @@ $router->post('/albums/update', 'AlbumController', 'update');
 $router->post('/albums/delete', 'AlbumController', 'delete');
 $router->post('/photos/delete', 'PhotoController', 'delete');
 $router->get('/albums/show', 'AlbumController', 'show');
-$router->post('/photos/delete', 'PhotoController', 'delete');
-$router->get('/albums/show', 'PhotoController', 'show');
+$router->get('/photos/show', 'PhotoController', 'show');
 
 try {
     $router->dispatch();

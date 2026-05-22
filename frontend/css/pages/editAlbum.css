@@ -109,18 +109,18 @@
 }
 
 .photos-grid {
-  column-count: 4; /* 4 colonnes fluides */
-  column-gap: 20px; /* Alignement parfait des espaces */
+  column-count: 5;
+  column-gap: 20px;
   width: 100%;
 }
 
 /* Les Cartes Photos */
 .photo-card {
   background-color: #f0f0f0;
-  border-radius: 16px; /* Coins arrondis typiques de Pinterest */
+  border-radius: 16px;
   overflow: hidden;
-  margin-bottom: 20px; /* Crée l'espace vertical entre les images du flux */
-  break-inside: avoid; /* Empêche les cartes de se briser entre deux colonnes */
+  margin-bottom: 20px; /* Important pour l'espace entre les photos */
+  break-inside: avoid; /* Empêche les images d'être coupées en deux */
   position: relative;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition:
@@ -133,12 +133,10 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* Règle d'or Pinterest : Largeur fixe à 100%, hauteur libre calculée par l'image */
 .photo-card img {
   width: 100%;
-  height: auto; /* Respecte le ratio vertical ou horizontal d'origine */
+  height: auto;
   display: block;
-  object-fit: cover;
 }
 
 /* ==========================================================================

@@ -56,10 +56,11 @@ class PhotoController extends AbstractController {
         // $commentManager = new CommentManager();
         // $comments = $commentManager->findByPhotoId($id);
 
-        $this->render('albums/show', [
-            'title'    => 'Détail de la photo',
+        $this->render('photos/photoDetails', [
+            'title'    => 'Détail',
             'photo'    => $photo,
-            'comments' => $comments
+            'comments' => $comments,
+            'extraCss' => 'detailPhoto'
         ]);
     }
 }
