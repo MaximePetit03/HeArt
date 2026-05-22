@@ -1,0 +1,23 @@
+<section class="photo-hero">
+    <img src="/uploads/albums/<?= htmlspecialchars($photo['filename']) ?>" alt="file">
+</section>
+
+<section class="comments-section">
+    <h3>Commentaires</h3>
+    <form action="<?= BASE_URL ?>/comments/add" method="POST">
+        <input type="hidden" name="photo_id" value="<?= $photo['id'] ?>">
+        <textarea name="content" required placeholder="Écrire un commentaire..."></textarea>
+        <button type="submit">Publier</button>
+    </form>
+
+    <div class="comments-list">
+        <?php if (!empty($comments)): ?>
+        <?php foreach ($comments as $comment): ?>
+        <p><strong><?= htmlspecialchars($comment['username']) ?> :</strong> <?= htmlspecialchars($comment['content']) ?>
+        </p>
+        <?php endforeach; ?>
+        <?php else: ?>
+        <p>Soyez le premier à commenter !</p>
+        <?php endif; ?>
+    </div>
+</section>

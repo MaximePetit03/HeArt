@@ -31,4 +31,35 @@ class PhotoController extends AbstractController {
             echo json_encode(['success' => false]);
         }
     }
+
+    public function show(?int $id = null): void {
+
+        if ($id === null) {
+            $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        }
+
+        if ($id === 0) {
+            $this->redirect('/');
+            return;
+        }
+
+        $photo = $this->photoManager->findById($id);
+
+        if (!$photo) {
+            $this->redirect('/');
+            return;
+        }
+
+        $comments = [];
+
+        // When comments is defined
+        // $commentManager = new CommentManager();
+        // $comments = $commentManager->findByPhotoId($id);
+
+        $this->render('albums/show', [
+            'title'    => 'Détail de la photo',
+            'photo'    => $photo,
+            'comments' => $comments
+        ]);
+    }
 }

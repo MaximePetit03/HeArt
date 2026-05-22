@@ -5,35 +5,35 @@
 
     <?php if (empty($albums)): ?>
     <div class="empty-state">
-        <div class="empty-icon">
-            <i class="fa-solid fa-folder-open"></i>
-        </div>
         <h2>Aucun album public</h2>
         <p>Il n'y a pas encore d'albums publics partagés par les utilisateurs.</p>
     </div>
     <?php else: ?>
     <div class="albums-grid">
         <?php foreach ($albums as $album): ?>
-        <div class="card">
-            <div class="card-cover-placeholder">
-                <i class="fa-regular fa-image"></i>
-            </div>
-            <div class="card-body">
-                <div class="card-title"><?= htmlspecialchars($album->getTitle()) ?></div>
-
-                <div class="card-meta">
-                    <i class="fa-regular fa-user"></i> <?= htmlspecialchars($album->getUsername() ?? 'Utilisateur') ?>
+        <a href="<?= BASE_URL ?>/albums/show?id=<?= $album->getId() ?>" class="album-link">
+            <div class="card">
+                <div class="card-cover-placeholder">
+                    <i class="fa-regular fa-image"></i>
                 </div>
+                <div class="card-body">
+                    <div class="card-title"><?= htmlspecialchars($album->getTitle()) ?></div>
 
-                <div class="card-meta">
-                    <i class="fa-regular fa-calendar"></i> <?= $album->getFormattedDate() ?>
+                    <div class="card-meta">
+                        <i class="fa-regular fa-user"></i>
+                        <?= htmlspecialchars($album->getUsername() ?? 'Utilisateur') ?>
+                    </div>
+
+                    <div class="card-meta">
+                        <i class="fa-regular fa-calendar"></i> <?= $album->getFormattedDate() ?>
+                    </div>
+
+                    <span class="badge badge-public">
+                        <i class="fa-solid fa-earth-europe"></i> Public
+                    </span>
                 </div>
-
-                <span class="badge badge-public">
-                    <i class="fa-solid fa-earth-europe"></i> Public
-                </span>
             </div>
-        </div>
+        </a>
         <?php endforeach; ?>
     </div>
     <?php endif; ?>

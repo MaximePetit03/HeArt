@@ -77,7 +77,6 @@ class AlbumManager extends AbstractManager {
     }
 
     public function findAllPublic(): array {
-        // On fait une jointure pour récupérer le nom de l'auteur
         $sql = "SELECT album.*, user.username
                 FROM album
                 JOIN user ON album.user_id = user.id

@@ -14,7 +14,6 @@ class AlbumController extends AbstractController {
 
     public function index(): void {
         $albums = $this->albumManager->findAllPublic();
-        $albums = $this->albumManager->findAllPublic();
         $tagManager = new TagManager();
 
         foreach ($albums as $album) {
@@ -287,5 +286,31 @@ class AlbumController extends AbstractController {
         }
         
         $this->redirect('/albums/my-albums');
+    }
+
+    public function show(?int $id = null): void {
+        if ($id === null) {
+            $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        }
+
+        if ($id === 0) {
+            $this->redirect('/');
+            return;
+        }
+
+        $album = $this->albumManager->findById($id);
+
+        if (!$album) {
+            $this->redirect('/');
+            return;
+        }
+
+        $photos = $this->photoManager->findByAlbumId($id);
+        
+        $this->render('albums/show', [
+            'title'  => $album->getTitle() . ' - HeArt',
+            'album'  => $album,
+            'photos' => $photos
+        ]);
     }
 }

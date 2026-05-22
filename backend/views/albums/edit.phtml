@@ -1,4 +1,4 @@
-<div class="edit-album-container js-edit-album-page" data-album-id="<?= (int)$album->getId() ?>">
+<section class="edit-album-container js-edit-album-page" data-album-id="<?= (int)$album->getId() ?>">
 
     <header class="album-page-header">
         <h1 class="large-title">Modifier : <?= htmlspecialchars($album->getTitle()) ?></h1>
@@ -11,9 +11,9 @@
             <button type="button" class="upload-dropzone js-upload-dropzone" aria-describedby="upload-instructions">
                 <div class="dropzone-content" id="upload-instructions">
                     <i class="fa-solid fa-cloud-arrow-up plus-icon" aria-hidden="true"></i>
-                    <span class="dropzone-title">Glissez vos images ici</span>
-                    <span class="dropzone-subtitle">ou <strong>parcourez</strong> vos fichiers locaux</span>
-                    <span class="dropzone-muted">Formats acceptés : JPG, JPEG, PNG, WEBP</span>
+                    <p class="dropzone-title">Glissez vos images ici</p>
+                    <p class="dropzone-subtitle">ou <strong>parcourez</strong> vos fichiers locaux</p>
+                    <p class="dropzone-muted">Formats acceptés : JPG, JPEG, PNG, WEBP</p>
                 </div>
             </button>
         </div>
@@ -55,15 +55,14 @@
     <div class="photos-grid-container">
         <div class="photos-grid js-photos-grid">
             <?php foreach ($photos as $photo): ?>
-            <div class="photo-card" data-photo-id="<?= (int)$photo['id'] ?>">
-                <img src="/uploads/albums/<?= htmlspecialchars($photo['filename']) ?>" alt="file" loading="lazy">
+            <div class="photo-card" data-photo-id="<?= (int)$photo->getId() ?>"> <img
+                    src="/uploads/albums/<?= htmlspecialchars($photo->getFilename()) ?>" alt="file" loading="lazy">
 
                 <div class="photo-actions">
-                    <button type="button" class="btn-toggle-visibility" data-photo-id="<?= (int)$photo['id'] ?>">
-                        <i
-                            class="fa-solid <?= (isset($photo['is_visible']) && $photo['is_visible'] == 1) ? 'fa-eye' : 'fa-eye-slash' ?>"></i>
+                    <button type="button" class="btn-toggle-visibility" data-photo-id="<?= (int)$photo->getId() ?>">
+                        <i class="fa-solid <?= $photo->isVisible() ? 'fa-eye' : 'fa-eye-slash' ?>"></i>
                     </button>
-                    <button type="button" class="btn-delete-photo" data-photo-id="<?= (int)$photo['id'] ?>">
+                    <button type="button" class="btn-delete-photo" data-photo-id="<?= (int)$photo->getId() ?>">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
@@ -71,4 +70,4 @@
             <?php endforeach; ?>
         </div>
     </div>
-</div>
+</section>

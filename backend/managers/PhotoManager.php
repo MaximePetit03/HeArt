@@ -36,9 +36,10 @@ class PhotoManager extends AbstractManager {
     }
 
     public function findByAlbumId(int $albumId): array {
-        $query = $this->db->prepare("SELECT id, filename, is_visible FROM photo WHERE album_id = :album_id");
-        $query->execute([':album_id' => $albumId]);
-        return $query->fetchAll(PDO::FETCH_ASSOC);
+        $query = $this->db->prepare("SELECT * FROM photo WHERE album_id = :id");
+        $query->execute([':id' => $albumId]);
+        
+        return $query->fetchAll(PDO::FETCH_CLASS, 'Photo');
     }
 
     public function toggleVisibility(int $id): bool {
@@ -48,7 +49,7 @@ class PhotoManager extends AbstractManager {
     
     public function isOwnerOfPhoto(int $photoId, int $userId): bool {
         $query = $this->db->prepare("
-            SELECT p.id 
+            SELECT p.id
             FROM photo p
             JOIN album a ON p.album_id = a.id
             WHERE p.id = :photo_id AND a.user_id = :user_id
@@ -76,5 +77,14 @@ class PhotoManager extends AbstractManager {
 
         $query = $this->db->prepare("DELETE FROM photo WHERE id = :id");
         $query->execute([':id' => $photoId]);
+    }
+
+    public function findById(int $id): object|false {
+        $query = $this->db->prepare("SELECT * FROM photo WHERE id = :id");
+        $query->execute([':id' => $id]);
+        
+        $query->setFetchMode(PDO::FETCH_CLASS, 'Photo');
+        
+        return $query->fetch();
     }
 }
