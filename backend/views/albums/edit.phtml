@@ -25,9 +25,11 @@
                 <div class="album-visibility-selector">
                     <label for="album-visibility">Visibilité de l'album :</label>
                     <select name="visibility" id="album-visibility" class="js-change-album-visibility">
-                        <option value="public" <?= $album->getVisibility() === 'public' ? 'selected' : '' ?>>Public
+                        <option value="public" <?= $album->getVisibility() === 'public' ? 'selected' : '' ?>>
+                            Public
                         </option>
-                        <option value="private" <?= $album->getVisibility() === 'private' ? 'selected' : '' ?>>Privé
+                        <option value="private" <?= $album->getVisibility() === 'private' ? 'selected' : '' ?>>
+                            Privé
                         </option>
                         <option value="restricted" <?= $album->getVisibility() === 'restricted' ? 'selected' : '' ?>>
                             Restreint
@@ -55,10 +57,13 @@
     <div class="photos-grid-container">
         <div class="photos-grid js-photos-grid">
             <?php foreach ($photos as $photo): ?>
-            <div class="photo-card" data-photo-id="<?= (int)$photo->getId() ?>"> <img
-                    src="/uploads/albums/<?= htmlspecialchars($photo->getFilename()) ?>" alt="file" loading="lazy">
+            <div class="photo-card" data-photo-id="<?= (int)$photo->getId() ?>">
+                <img src="/uploads/albums/<?= htmlspecialchars($photo->getFilename()) ?>" alt="file" loading="lazy">
 
                 <div class="photo-actions">
+                    <button type="button" class="open-tags js-open-tags" data-photo-id="<?= (int)$photo->getId() ?>">
+                        <i class="fa-solid fa-tag"></i>
+                    </button>
                     <button type="button" class="btn-toggle-visibility" data-photo-id="<?= (int)$photo->getId() ?>">
                         <i class="fa-solid <?= $photo->isVisible() ? 'fa-eye' : 'fa-eye-slash' ?>"></i>
                     </button>
@@ -70,4 +75,18 @@
             <?php endforeach; ?>
         </div>
     </div>
+    <div id="tag-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Choisir des tags</h3>
+            <div class="tag-list-grid" id="js-tag-list"></div>
+            <button id="close-btn" class="btn-primary">Enregistrer les modifications</button>
+        </div>
+    </div>
 </section>
+
+<script id="all-tags-data" type="application/json">
+<?= json_encode(array_map(fn($t) => [
+        'id' => $t->getId(),
+        'name' => $t->getName()
+    ], $allTags)) ?>
+</script>

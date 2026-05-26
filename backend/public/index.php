@@ -52,6 +52,7 @@ $router->get('/albums/my-albums', 'AlbumController', 'myAlbums');
 $router->post('/albums/upload-photos', 'AlbumController', 'uploadPhotos');
 $router->post('/albums/update-visibility', 'AlbumController', 'updateVisibility');
 $router->post('/photos/toggle-visibility', 'PhotoController', 'toggleVisibility');
+$router->post('/photos/toggle-tag', 'PhotoController', 'toggleTag');
 $router->post('/albums/update', 'AlbumController', 'update');
 $router->post('/albums/delete', 'AlbumController', 'delete');
 $router->post('/photos/delete', 'PhotoController', 'delete');

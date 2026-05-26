@@ -63,4 +63,24 @@ class PhotoController extends AbstractController {
             'extraCss' => 'detailPhoto'
         ]);
     }
+
+    public function toggleTag(): void {
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (!isset($data['photoId'], $data['tagId'])) {
+            echo json_encode(['success' => false, 'message' => 'Données manquantes']);
+            return;
+        }
+
+        if (!$this->photoManager->isOwnerOfPhoto($data['photoId'], $_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'Non autorisé']);
+            return;
+        }
+
+        $success = $this->photoManager->toggleTag((int)$data['photoId'], (int)$data['tagId']);
+        
+        echo json_encode(['success' => $success]);
+        exit;
+    }
 }

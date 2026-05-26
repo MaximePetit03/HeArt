@@ -4,7 +4,8 @@ export class AlbumEditView {
     this.dropZone = document.querySelector(".js-upload-dropzone");
     this.fileInput = document.querySelector(".js-photo-upload-input");
     this.photosGrid = document.querySelector(".js-photos-grid");
-
+    this.tagModal = document.getElementById("tag-modal");
+    this.tagListContainer = document.getElementById("js-tag-list");
     this.albumVisibilitySelect = document.querySelector(
       ".js-change-album-visibility",
     );
@@ -23,6 +24,7 @@ export class AlbumEditView {
 
     this.initEvents();
     this.initVisibility();
+    this.initTags();
   }
 
   initVisibility() {
@@ -111,6 +113,99 @@ export class AlbumEditView {
     });
   }
 
+  initTags() {
+    this.photosGrid.addEventListener("click", (e) => {
+      const tagBtn = e.target.closest(".js-open-tags");
+      if (tagBtn) {
+        this.openTagModal(tagBtn.dataset.photoId);
+      }
+    });
+
+    document.getElementById("close-btn").addEventListener("click", () => {
+      this.tagModal.style.display = "none";
+    });
+  }
+
+  async openTagModal(photoId) {
+    if (!this.tagModal) return;
+
+    this.tagModal.dataset.currentPhotoId = photoId;
+    this.tagModal.style.display = "flex";
+
+    const allTags = JSON.parse(
+      document.getElementById("all-tags-data").textContent,
+    );
+
+    this.tagListContainer.innerHTML = allTags
+      .map(
+        (tag) => `
+        <button type="button" class="tag-btn" data-tag-id="${tag.id}" data-tag-name="${tag.name}">
+            ${tag.name}
+        </button>
+    `,
+      )
+      .join("");
+
+    this.tagListContainer.querySelectorAll(".tag-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tagId = btn.dataset.tagId;
+        const tagName = btn.dataset.tagName;
+
+        this.toggleTag(tagId, photoId);
+
+        btn.classList.toggle("tag-active");
+
+        this.updateTagsOnImage(
+          photoId,
+          tagId,
+          tagName,
+          btn.classList.contains("tag-active"),
+        );
+      });
+    });
+  }
+
+  updateTagsOnImage(photoId, tagId, tagName, isActive) {
+    const photoCard = document.querySelector(
+      `.photo-card[data-photo-id="${photoId}"]`,
+    );
+    if (!photoCard) return;
+
+    let tagsContainer = photoCard.querySelector(".photo-tags-display");
+    if (!tagsContainer) {
+      tagsContainer = document.createElement("div");
+      tagsContainer.className = "photo-tags-display";
+      photoCard.querySelector("img").after(tagsContainer);
+    }
+
+    if (isActive) {
+      if (!tagsContainer.querySelector(`[data-tag-id="${tagId}"]`)) {
+        const tagBadge = document.createElement("span");
+        tagBadge.className = "photo-tag-badge";
+        tagBadge.dataset.tagId = tagId;
+        tagBadge.textContent = tagName;
+        tagsContainer.appendChild(tagBadge);
+      }
+    } else {
+      const tagBadge = tagsContainer.querySelector(`[data-tag-id="${tagId}"]`);
+      if (tagBadge) {
+        tagBadge.remove();
+      }
+    }
+  }
+
+  async toggleTag(tagId, photoId) {
+    const response = await fetch("/photos/toggle-tag", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ photoId, tagId }),
+    });
+    const result = await response.json();
+    if (!result.success) {
+      alert("Erreur lors de l'enregistrement du tag.");
+    }
+  }
+
   async handleUpload(files) {
     const formData = new FormData();
     formData.append("album_id", this.albumId);
@@ -151,6 +246,9 @@ export class AlbumEditView {
 
     card.innerHTML = `<img src="${photoUrl}" alt="Photo de l'album" loading="lazy">
         <div class="photo-actions">
+            <button type="button" class="btn-tag js-open-tags" data-photo-id="${photoId}">
+                <i class="fa-solid fa-tag"></i>
+            </button>
             <button type="button" class="btn-toggle-visibility js-toggle-visibility" data-photo-id="${photoId}">
                 <i class="fa-solid fa-eye" aria-hidden="true"></i>
             </button>

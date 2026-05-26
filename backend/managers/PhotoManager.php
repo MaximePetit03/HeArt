@@ -84,4 +84,17 @@ class PhotoManager extends AbstractManager {
         
         return $query->fetch();
     }
+
+    public function toggleTag(int $photoId, int $tagId): bool {
+        $query = $this->db->prepare("SELECT COUNT(*) FROM photo_tag WHERE photo_id = ? AND tag_id = ?");
+        $query->execute([$photoId, $tagId]);
+
+        if ($query->fetchColumn() > 0) {
+            $query = $this->db->prepare("DELETE FROM photo_tag WHERE photo_id = ? AND tag_id = ?");
+        } else {
+            $query = $this->db->prepare("INSERT INTO photo_tag (photo_id, tag_id) VALUES (?, ?)");
+        }
+
+        return $query->execute([$photoId, $tagId]);
+    }
 }
