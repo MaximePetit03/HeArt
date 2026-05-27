@@ -3,35 +3,62 @@
         <h1>Explorer les albums</h1>
     </div>
 
+    <div class="filter-section">
+        <div class="filter-tags js-filter-tags">
+            <label class="filter-radio">
+                <input type="radio" name="tag-filter" value="all" checked>
+                <span>Tous</span>
+            </label>
+            <?php foreach ($allTags as $tag): ?>
+            <label class="filter-radio">
+                <input type="radio" name="tag-filter" value="<?= $tag->getId() ?>">
+                <span><?= htmlspecialchars($tag->getName()) ?></span>
+            </label>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
     <?php if (empty($albums)): ?>
     <div class="empty-state">
         <h2>Aucun album public</h2>
         <p>Il n'y a pas encore d'albums publics partagés par les utilisateurs.</p>
     </div>
     <?php else: ?>
-    <div class="albums-grid">
+    <div class="albums-grid js-albums-grid">
         <?php foreach ($albums as $album): ?>
-        <a href="<?= BASE_URL ?>/albums/show?id=<?= $album->getId() ?>" class="album-link">
+        <a href="<?= BASE_URL ?>/albums/show?id=<?= $album->getId() ?>" class="album-link js-album-card"
+            data-tags="<?= implode(',', array_map(fn($t) => $t->getId(), $album->getTags())) ?>">
             <div class="card">
-                <div class="card-cover-placeholder">
-                    <i class="fa-regular fa-image"></i>
-                </div>
-                <div class="card-body">
-                    <div class="card-title"><?= htmlspecialchars($album->getTitle()) ?></div>
+                <article class="card-body">
+                    <header>
+                        <h2 class="card-title"><?= htmlspecialchars($album->getTitle()) ?></h2>
+                    </header>
 
-                    <div class="card-meta">
-                        <i class="fa-regular fa-user"></i>
+                    <p class="card-meta">
+                        <i class="fa-regular fa-user" aria-hidden="true"></i>
                         <?= htmlspecialchars($album->getUsername() ?? 'Utilisateur') ?>
-                    </div>
+                    </p>
 
-                    <div class="card-meta">
+                    <p class="card-meta">
                         <i class="fa-regular fa-calendar"></i> <?= $album->getFormattedDate() ?>
-                    </div>
+                    </p>
 
-                    <span class="badge badge-public">
-                        <i class="fa-solid fa-earth-europe"></i> Public
-                    </span>
-                </div>
+                    <footer class="card-footer-info">
+                        <span class="badge badge-public">
+                            <i class="fa-solid fa-earth-europe" aria-hidden="true"></i> Public
+                        </span>
+
+                        <ul class="album-tags-list">
+                            <?php foreach ($album->getTags() as $tag): ?>
+                            <li>
+                                <span class="badge-tag">
+                                    <i class="fa-solid fa-tag"></i><?= htmlspecialchars($tag->getName()) ?>
+                                </span>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </footer>
+                </article>
             </div>
         </a>
         <?php endforeach; ?>

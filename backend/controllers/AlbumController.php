@@ -15,6 +15,8 @@ class AlbumController extends AbstractController {
     public function index(): void {
         $albums = $this->albumManager->findAllPublic();
         $tagManager = new TagManager();
+        
+        $allTags = $tagManager->findAll();
 
         foreach ($albums as $album) {
             $album->setTags($tagManager->findByAlbumId($album->getId()));
@@ -22,7 +24,8 @@ class AlbumController extends AbstractController {
         
         $this->render('albums/index', [
             'title'  => 'Explorer - HeArt',
-            'albums' => $albums
+            'albums' => $albums,
+            'allTags' => $allTags
         ]);
     }
 

@@ -24,11 +24,8 @@
                 </button>
             </form>
             <a href="<?= BASE_URL ?>/albums/edit?id=<?= $album->getId() ?>" class="card">
-                <div class="card-cover-placeholder">
-                    <i class="fa-regular fa-image"></i>
-                </div>
                 <div class="card-body">
-                    <div class="card-title"><?= htmlspecialchars($album->getTitle()) ?></div>
+                    <h2 class="card-title"><?= htmlspecialchars($album->getTitle()) ?></h2>
                     <div class="card-meta">
                         <i class="fa-regular fa-calendar"></i> <?= $album->getFormattedDate() ?>
                     </div>
@@ -46,7 +43,7 @@
                         <?php
                         $tagManager = new TagManager();
                         $tags = $tagManager->findByAlbumId($album->getId());
-                    ?>
+                        ?>
 
                         <?php foreach ($tags as $tag): ?>
                         <span class="badge badge-tag">
