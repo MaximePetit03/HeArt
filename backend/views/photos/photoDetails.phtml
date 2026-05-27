@@ -2,22 +2,49 @@
     <img src="/uploads/albums/<?= htmlspecialchars($photo->getFilename()) ?>" alt="file">
 </section>
 
-<section class="comments-section">
-    <h3>Commentaires</h3>
-    <form action="<?= BASE_URL ?>/comments/add" method="POST">
-        <input type="hidden" name="photo_id" value="<?= $photo->getId() ?>">
-        <textarea name="content" required placeholder="Écrire un commentaire"></textarea>
-        <button type="submit">Publier</button>
-    </form>
+<section class="photo-details-container">
+    <div class="comments-section">
+        <h3>Commentaires</h3>
 
-    <div class="comments-list">
-        <?php if (!empty($comments)): ?>
-        <?php foreach ($comments as $comment): ?>
-        <p><strong><?= htmlspecialchars($comment['username']) ?> :</strong> <?= htmlspecialchars($comment['content']) ?>
-        </p>
-        <?php endforeach; ?>
+        <?php if ($this->isLoggedIn()): ?>
+        <form action="<?= BASE_URL ?>/comments/add" method="POST" class="comment-form">
+            <input type="hidden" name="photo_id" value="<?= $photo->getId() ?>">
+            <textarea name="content" required placeholder="Laisser un commentaire..." rows="3"></textarea>
+            <button type="submit">Publier</button>
+        </form>
         <?php else: ?>
-        <p>Soyez le premier à commenter !</p>
+        <p><a href="<?= BASE_URL ?>/login">Connectez-vous</a> pour commenter.</p>
         <?php endif; ?>
+
+        <div class="comments-list">
+            <?php if (empty($comments)): ?>
+            <p>Aucun commentaire pour le moment.</p>
+            <?php else: ?>
+            <?php foreach ($comments as $comment): ?>
+            <article class="comment-item" id="comment-<?= $comment->getId() ?>">
+                <div class="comment-header">
+                    <strong><?= htmlspecialchars($comment->getUsername()) ?></strong>
+                    <small><?= $comment->getCreatedAt() ?></small>
+                </div>
+
+                <div class="comment-content">
+                    <p><?= htmlspecialchars($comment->getContent()) ?></p>
+                </div>
+
+                <?php if (isset($_SESSION['user_id']) && (int)$_SESSION['user_id'] === $comment->getUserId()): ?>
+                <div class="comment-actions">
+                    <button class="btn-edit-comment" data-id="<?= $comment->getId() ?>">Modifier</button>
+
+                    <form action="<?= BASE_URL ?>/comments/delete" method="POST"
+                        onsubmit="return confirm('Supprimer ce commentaire ?')">
+                        <input type="hidden" name="comment_id" value="<?= $comment->getId() ?>">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </div>
+                <?php endif; ?>
+            </article>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </section>

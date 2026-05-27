@@ -1,9 +1,11 @@
 <?php
 class PhotoController extends AbstractController {
     private PhotoManager $photoManager;
+    private AlbumManager $albumManager;
 
     public function __construct() {
         $this->photoManager = new PhotoManager();
+        $this->albumManager = new AlbumManager();
     }
 
     public function toggleVisibility(): void {
@@ -50,11 +52,21 @@ class PhotoController extends AbstractController {
             return;
         }
 
+        $album = $this->albumManager->findById($photo->getAlbumId());
+
+        $isOwner = (isset($_SESSION['user_id']) && $album->getUserId() === (int)$_SESSION['user_id']);
+        $isPublic = ($album->getVisibility() === 'public');
+        $isAuthorized = ($album->getVisibility() === 'restricted' && $this->albumManager->isInvited($album->getId(), $_SESSION['user_id'] ?? 0));
+
+        if (!$isOwner && !$isPublic && !$isAuthorized) {
+            $this->redirect('/');
+            return;
+        }
+
         $comments = [];
 
-        // When comments is defined
-        // $commentManager = new CommentManager();
-        // $comments = $commentManager->findByPhotoId($id);
+        $commentManager = new CommentManager();
+        $comments = $commentManager->findByPhotoId($id);
 
         $this->render('photos/photoDetails', [
             'title'    => 'Détail',

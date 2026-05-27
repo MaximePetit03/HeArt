@@ -309,7 +309,7 @@ class AlbumController extends AbstractController {
         }
 
         $photos = $this->photoManager->findByAlbumId($id);
-        
+
         $this->render('albums/show', [
             'title'  => $album->getTitle() . ' - HeArt',
             'album'  => $album,

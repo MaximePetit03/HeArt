@@ -34,10 +34,9 @@
                         <h2 class="card-title"><?= htmlspecialchars($album->getTitle()) ?></h2>
                     </header>
 
-                    <p class="card-meta">
-                        <i class="fa-regular fa-user" aria-hidden="true"></i>
+                    <h2 class="card-meta" style="color: black">
                         <?= htmlspecialchars($album->getUsername() ?? 'Utilisateur') ?>
-                    </p>
+                    </h2>
 
                     <p class="card-meta">
                         <i class="fa-regular fa-calendar"></i> <?= $album->getFormattedDate() ?>

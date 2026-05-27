@@ -182,4 +182,15 @@ class AlbumManager extends AbstractManager {
 
         return $result && (int)$result['user_id'] === $userId;
     }
+
+    public function isInvited(int $albumId, int $userId): bool {
+        $query = $this->db->prepare("SELECT COUNT(*) FROM album_invitation
+                WHERE album_id = :album_id AND user_id = :user_id");
+        $query->execute([
+            'album_id' => $albumId,
+            'user_id'  => $userId
+        ]);
+        
+        return (int)$query->fetchColumn() > 0;
+    }
 }

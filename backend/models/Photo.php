@@ -9,7 +9,7 @@ class Photo {
     public string $created_at;
     public bool $is_visible;
     public ?string $taken_at;
-
+    
     public function getId(): int {
         return $this->id;
     }

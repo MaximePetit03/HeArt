@@ -58,6 +58,10 @@ $router->post('/albums/delete', 'AlbumController', 'delete');
 $router->post('/photos/delete', 'PhotoController', 'delete');
 $router->get('/albums/show', 'AlbumController', 'show');
 $router->get('/photos/show', 'PhotoController', 'show');
+$router->post('/comments/add', 'CommentController', 'add');
+$router->post('/comments/add', 'CommentController', 'add');
+$router->post('/comments/delete', 'CommentController', 'delete');
+$router->post('/comments/edit', 'CommentController', 'edit');
 
 try {
     $router->dispatch();

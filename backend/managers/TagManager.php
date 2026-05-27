@@ -5,8 +5,8 @@ class TagManager extends AbstractManager {
     protected string $entityClass = 'Tag';
 
     public function findAll(): array {
-        $stmt = $this->db->query("SELECT * FROM `{$this->table}` ORDER BY name ASC");
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $query = $this->db->query("SELECT * FROM `{$this->table}` ORDER BY name ASC");
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
         
         $tags = [];
         foreach ($results as $data) {

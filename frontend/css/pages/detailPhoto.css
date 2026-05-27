@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PAGE DE DÉTAIL PHOTO
+   PAGE DE DÉTAIL PHOTO - INTÉGRATION COMMENTAIRES
    ========================================================================== */
 
 /* Conteneur global centré */
@@ -18,17 +18,17 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Section commentaires centrée */
+/* Section commentaires */
 .comments-section {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  text-align: center;
 }
 
 .comments-section h3 {
   margin-bottom: 20px;
   font-size: 1.5rem;
+  text-align: center;
 }
 
 /* Formulaire */
@@ -41,7 +41,6 @@
 
 .comments-section textarea {
   width: 100%;
-  height: 100px;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -50,7 +49,7 @@
 }
 
 .comments-section button {
-  align-self: center; /* Centre le bouton */
+  align-self: center;
   padding: 10px 25px;
   background-color: #e60023;
   color: white;
@@ -65,15 +64,83 @@
   background-color: #ad001a;
 }
 
+/* Liste des commentaires */
 .comments-list {
   text-align: left;
   border-top: 1px solid #eee;
   padding-top: 20px;
 }
 
-.comments-list p {
-  background: #f9f9f9;
+.comment-item {
+  margin-bottom: 20px;
   padding: 12px;
+  background: #f9f9f9;
   border-radius: 8px;
-  margin-bottom: 10px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #777;
+}
+
+.comment-header strong {
+  color: #333;
+}
+
+/* Actions des commentaires */
+.comment-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.comment-actions form {
+  margin: 0;
+  display: inline-block;
+}
+
+.comment-actions button {
+  margin: 0;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 28px;
+}
+
+.comment-actions button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Style spécifique Supprimer */
+.comment-actions form button {
+  color: #e60023;
+  border-color: #e60023;
+}
+
+.comment-actions form button:hover {
+  background-color: #e60023;
+  color: white;
+}
+
+/* Zone d'édition dynamique */
+.edit-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.btn-save {
+  background-color: #e60023;
+  color: white !important;
+  border: none !important;
 }
