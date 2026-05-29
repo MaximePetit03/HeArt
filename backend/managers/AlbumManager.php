@@ -193,4 +193,61 @@ class AlbumManager extends AbstractManager {
         
         return (int)$query->fetchColumn() > 0;
     }
+
+    public function getInvitations(int $albumId): array {
+        $query = $this->db->prepare("SELECT u.id, u.username
+                                    FROM user u
+                                    JOIN album_invitation ai ON u.id = ai.user_id
+                                    WHERE ai.album_id = :album_id");
+        $query->execute(['album_id' => $albumId]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addInvitation(int $albumId, int $userId): void {
+        $query = $this->db->prepare("INSERT INTO album_invitation (album_id, user_id, permission)
+                                    VALUES (:album_id, :user_id, 'view')");
+        $query->execute(['album_id' => $albumId, 'user_id' => $userId]);
+    }
+
+    public function removeInvitation(int $albumId, int $userId): void {
+        $query = $this->db->prepare("DELETE FROM album_invitation 
+                                    WHERE album_id = :album_id AND user_id = :user_id");
+        $query->execute(['album_id' => $albumId, 'user_id' => $userId]);
+    }
+
+    public function findAllForUser(int $userId): array {
+        $sql = "
+            SELECT album.*, 'owner' AS access_type
+            FROM album
+            WHERE album.user_id = :uid1
+
+            UNION
+
+            SELECT album.*, 'guest' AS access_type
+            FROM album
+            JOIN album_invitation ON album.id = album_invitation.album_id
+            WHERE album_invitation.user_id = :uid2
+
+            ORDER BY created_at DESC
+        ";
+
+        $query = $this->db->prepare($sql);
+        $query->execute([':uid1' => $userId, ':uid2' => $userId]);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $albums = [];
+        foreach ($result as $item) {
+            $album = new Album(
+                $item['title'],
+                $item['description'] ?? '',
+                $item['visibility'],
+                (int)$item['user_id']
+            );
+            $album->setId((int)$item['id']);
+            $album->setCreatedAt($item['created_at']);
+            $albums[] = $album;
+        }
+
+        return $albums;
+    }
 }

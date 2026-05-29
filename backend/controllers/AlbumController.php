@@ -36,11 +36,11 @@ class AlbumController extends AbstractController {
         }
 
         $userId = (int)$_SESSION['user_id'];
-        $albums = $this->albumManager->findByUserId($userId);
+        $albums = $this->albumManager->findAllForUser($userId);
 
         $this->render('user/userAlbums', [
-            'title'  => 'Mes Albums - HeArt',
-            'albums' => $albums,
+            'title'    => 'Mes Albums - HeArt',
+            'albums'   => $albums,
             'extraCss' => 'editAlbum'
         ]);
     }
@@ -291,30 +291,85 @@ class AlbumController extends AbstractController {
         $this->redirect('/albums/my-albums');
     }
 
-    public function show(?int $id = null): void {
-        if ($id === null) {
-            $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-        }
-
-        if ($id === 0) {
-            $this->redirect('/');
-            return;
-        }
-
+   public function show(?int $id = null): void {
+        if ($id === null) $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        
         $album = $this->albumManager->findById($id);
+        if (!$album) { $this->redirect('/'); return; }
 
-        if (!$album) {
+        $isLoggedIn = $this->isLoggedIn();
+        $currentUserId = $isLoggedIn ? (int)$_SESSION['user_id'] : 0;
+        
+        $isOwner = ($album->getUserId() === $currentUserId);
+        $isPublic = ($album->getVisibility() === 'public');
+        $isInvited = $isLoggedIn && $this->albumManager->isInvited($id, $currentUserId);
+
+        if (!$isPublic && !$isOwner && !$isInvited) {
             $this->redirect('/');
             return;
         }
 
         $photos = $this->photoManager->findByAlbumId($id);
-
         $this->render('albums/show', [
-            'title'  => $album->getTitle() . ' - HeArt',
-            'album'  => $album,
+            'title' => $album->getTitle() . ' - HeArt',
+            'album' => $album,
             'extraCss' => 'detailAlbum',
             'photos' => $photos
         ]);
+    }
+
+    public function getInvitations(): void {
+        $albumId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        
+        header('Content-Type: application/json');
+
+        if (!$this->albumManager->isOwner($albumId, $_SESSION['user_id'])) {
+            http_response_code(403);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Accès refusé']);
+            exit;
+        }
+
+        $invitations = $this->albumManager->getInvitations($albumId);
+        echo json_encode($invitations);
+        exit;
+    }
+
+    public function inviteUser(): void {
+        $jsonInput = file_get_contents('php://input');
+        $data = json_decode($jsonInput, true);
+        
+        $albumId = (int)($data['album_id'] ?? 0);
+        $userId = (int)($data['user_id'] ?? 0);
+
+        header('Content-Type: application/json');
+        
+        if ($this->albumManager->isOwner($albumId, $_SESSION['user_id'])) {
+            $this->albumManager->addInvitation($albumId, $userId);
+            echo json_encode(['success' => true]);
+        } else {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Accès refusé']);
+        }
+        exit;
+    }
+
+    public function removeGuest(): void {
+        $jsonInput = file_get_contents('php://input');
+        $data = json_decode($jsonInput, true);
+        
+        $albumId = (int)($data['album_id'] ?? 0);
+        $userId = (int)($data['user_id'] ?? 0);
+
+        header('Content-Type: application/json');
+
+        if ($this->albumManager->isOwner($albumId, $_SESSION['user_id'])) {
+            $this->albumManager->removeInvitation($albumId, $userId);
+            echo json_encode(['success' => true]);
+        } else {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Accès refusé']);
+        }
+        exit;
     }
 }

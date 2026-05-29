@@ -35,7 +35,26 @@
                             Restreint
                         </option>
                     </select>
+
+                    <button type="button" id="btn-manage-access" style="display: none; margin-top: 10px;"
+                        class="btn btn-secondary">
+                        <i class="fa-solid fa-users-gear" aria-hidden="true"></i> Gérer les accès
+                    </button>
                 </div>
+
+                <dialog id="access-modal" class="modal-dialog">
+                    <article class="modal-content">
+                        <header>
+                            <h3>Gestion des accès restreints</h3>
+                        </header>
+
+                        <div id="access-modal-content"></div>
+
+                        <footer>
+                            <button type="button" id="close-access-modal" class="btn-primary">Fermer</button>
+                        </footer>
+                    </article>
+                </dialog>
 
                 <div class="album-visibility-selector">
                     <label for="tags">Tags de l'album :</label>
@@ -48,6 +67,8 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
+
+
             </div>
 
             <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>

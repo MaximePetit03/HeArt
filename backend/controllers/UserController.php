@@ -146,4 +146,20 @@ class UserController extends AbstractController {
 
         return null;
     }
+
+    public function list(): void {
+        header('Content-Type: application/json');
+
+        if (!$this->isLoggedIn()) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Non autorisé']);
+            exit;
+        }
+
+        $userManager = new UserManager();
+        $users = $userManager->findAllOther((int)$_SESSION['user_id']);
+
+        echo json_encode($users);
+        exit;
+    }
 }

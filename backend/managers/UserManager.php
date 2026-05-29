@@ -94,4 +94,18 @@ class UserManager extends AbstractManager {
         $query = $this->db->prepare("DELETE FROM `{$table}` WHERE id = :id");
         $query->execute([':id' => $id]);
     }
+
+    public function findAll(): array {
+        $table = $this->getSecureTable();
+        $query = $this->db->prepare("SELECT id, username FROM `{$table}`");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findAllOther(int $excludedUserId): array {
+        $table = $this->getSecureTable();
+        $query = $this->db->prepare("SELECT id, username FROM `{$table}` WHERE id != :id");
+        $query->execute([':id' => $excludedUserId]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

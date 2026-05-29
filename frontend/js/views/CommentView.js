@@ -14,21 +14,28 @@ export class CommentView {
   }
 
   handleEdit(event) {
-    // 1. On cible l'article précis du commentaire cliqué
     const container = event.target.closest(".comment-item");
     const commentId = event.target.dataset.id;
     const contentDiv = container.querySelector(".comment-content");
     const contentP = contentDiv.querySelector("p");
 
-    const oldContent = contentP.innerText;
+    const oldContent = contentP.textContent;
 
-    contentDiv.innerHTML = `
-        <textarea class="edit-textarea">${oldContent}</textarea>
-        <button class="btn-save">Enregistrer</button>
-    `;
+    contentDiv.textContent = "";
 
-    container.querySelector(".btn-save").addEventListener("click", () => {
-      const newContent = container.querySelector(".edit-textarea").value;
+    const textarea = document.createElement("textarea");
+    textarea.className = "edit-textarea";
+    textarea.value = oldContent;
+
+    const saveBtn = document.createElement("button");
+    saveBtn.className = "btn-save";
+    saveBtn.textContent = "Enregistrer";
+
+    contentDiv.appendChild(textarea);
+    contentDiv.appendChild(saveBtn);
+
+    saveBtn.addEventListener("click", () => {
+      const newContent = textarea.value;
       this.saveEdit(commentId, newContent);
     });
   }

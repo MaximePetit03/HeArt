@@ -424,3 +424,119 @@
   white-space: nowrap;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
+
+/* ==========================================================================
+   5. MODALE DE GESTION DES ACCÈS (STYLE HÉRA-STYLE)
+   ========================================================================== */
+
+#access-modal {
+  border: none;
+  border-radius: var(--rounded-lg);
+  padding: 0;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: var(--shadow-xl);
+  background: var(--white);
+  overflow: hidden;
+}
+
+#access-modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+#access-modal .modal-content {
+  padding: 24px;
+  text-align: left;
+}
+
+#access-modal h3 {
+  margin: 0 0 20px 0;
+  font-size: 1.25rem;
+  color: var(--text-strong);
+}
+
+#access-modal h4 {
+  margin: 16px 0 8px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Liste des invités */
+#access-modal-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#access-modal-content li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* Bouton "Virer" */
+#access-modal-content li button {
+  background: var(--surface);
+  color: var(--text-muted);
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--rounded-md);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition:
+    background var(--transition),
+    color var(--transition);
+}
+
+#access-modal-content li button:hover {
+  background: var(--red-light);
+  color: var(--red);
+}
+
+/* Sélecteur d'utilisateur */
+#user-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--rounded-md);
+  margin-bottom: 15px;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--white);
+}
+
+#user-select:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-ring);
+}
+
+/* Pied de page et boutons */
+#access-modal footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+#close-access-modal {
+  background: var(--text);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: var(--rounded-md);
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+  transition: background var(--transition);
+}
+
+#close-access-modal:hover {
+  background: var(--text-strong);
+}

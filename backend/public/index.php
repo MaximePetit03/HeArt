@@ -62,6 +62,10 @@ $router->post('/comments/add', 'CommentController', 'add');
 $router->post('/comments/add', 'CommentController', 'add');
 $router->post('/comments/delete', 'CommentController', 'delete');
 $router->post('/comments/edit', 'CommentController', 'edit');
+$router->get('/albums/getInvitations', 'AlbumController', 'getInvitations');
+$router->post('/albums/inviteUser', 'AlbumController', 'inviteUser');
+$router->post('/albums/removeGuest', 'AlbumController', 'removeGuest');
+$router->get('/users/list', 'UserController', 'list');
 
 try {
     $router->dispatch();
