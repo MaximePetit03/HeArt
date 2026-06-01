@@ -1,6 +1,7 @@
 import { AlbumCreateView } from "./views/AlbumCreateView.js";
 import { AlbumEditView } from "./views/AlbumEditView.js";
 import { PhotoController } from "./controllers/PhotoController.js";
+import { PhotoView } from "./views/PhotoView.js";
 import { AlbumView } from "./views/AlbumView.js";
 import { CommentView } from "./views/CommentView.js";
 
@@ -26,5 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector(".comments-section")) {
     const commentView = new CommentView();
     commentView.init();
+  }
+
+  if (document.querySelector(".js-filter-tags")) {
+    new PhotoView(".js-filter-tags", ".js-photo-item");
   }
 });

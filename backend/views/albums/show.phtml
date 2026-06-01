@@ -1,13 +1,33 @@
 <section class="photos-grid-container">
-    <h1 class="large-title">Album : <?= htmlspecialchars($album->getTitle()) ?></h1>
+    <header class="album-page-header">
+        <h1 class="large-title">Album : <?= htmlspecialchars($album->getTitle()) ?></h1>
+    </header>
 
-    <div class="photos-grid">
+    <section class="filter-section" aria-label="Filtrer les photos">
+        <nav class="filter-tags js-filter-tags">
+            <label class="filter-radio">
+                <input type="radio" name="tag-filter" value="all" checked> <span>Tous</span>
+            </label>
+            <?php foreach ($allTags as $tag): ?>
+            <label class="filter-radio">
+                <input type="radio" name="tag-filter" value="<?= $tag['id'] ?>">
+                <span><?= htmlspecialchars($tag['name']) ?></span>
+            </label>
+            <?php endforeach; ?>
+        </nav>
+    </section>
+
+    <div class="photos-grid js-photos-grid">
         <?php foreach ($photos as $photo): ?>
-        <div class="photo-item">
+        <?php
+            $tags = $photoTags[$photo->getId()] ?? [];
+            $tagIds = implode(',', array_map(fn($t) => $t['id'], $tags));
+        ?>
+        <article class="photo-item js-photo-item" data-tags="<?= $tagIds ?>">
             <a href="<?= BASE_URL ?>/photos/show?id=<?= $photo->getId() ?>">
                 <img src="/uploads/albums/<?= htmlspecialchars($photo->getFilename()) ?>" alt="file">
             </a>
-        </div>
+        </article>
         <?php endforeach; ?>
     </div>
 </section>

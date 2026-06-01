@@ -97,4 +97,12 @@ class PhotoManager extends AbstractManager {
 
         return $query->execute([$photoId, $tagId]);
     }
+
+    public function getTagsByPhotoId(int $photoId): array {
+        $query = $this->db->prepare("SELECT t.id, t.name FROM tag t JOIN photo_tag pt
+                ON t.id = pt.tag_id
+                WHERE pt.photo_id = :photo_id");
+        $query->execute([':photo_id' => $photoId]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

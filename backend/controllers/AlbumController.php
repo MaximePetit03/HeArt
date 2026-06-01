@@ -291,7 +291,7 @@ class AlbumController extends AbstractController {
         $this->redirect('/albums/my-albums');
     }
 
-   public function show(?int $id = null): void {
+    public function show(?int $id = null): void {
         if ($id === null) $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
         
         $album = $this->albumManager->findById($id);
@@ -310,11 +310,21 @@ class AlbumController extends AbstractController {
         }
 
         $photos = $this->photoManager->findByAlbumId($id);
+    
+        $photoTags = [];
+        foreach ($photos as $photo) {
+            $photoTags[$photo->getId()] = $this->photoManager->getTagsByPhotoId($photo->getId());
+        }
+
+        $allTags = $this->albumManager->findAllTags();
+
         $this->render('albums/show', [
             'title' => $album->getTitle() . ' - HeArt',
             'album' => $album,
             'extraCss' => 'detailAlbum',
-            'photos' => $photos
+            'photos' => $photos,
+            'photoTags' => $photoTags,
+            'allTags' => $allTags
         ]);
     }
 

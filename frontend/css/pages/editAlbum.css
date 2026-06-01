@@ -429,7 +429,8 @@
    5. MODALE DE GESTION DES ACCÈS (STYLE HÉRA-STYLE)
    ========================================================================== */
 
-#access-modal {
+/* Utilisation de .access-modal au lieu de #access-modal */
+.access-modal {
   border: none;
   border-radius: var(--rounded-lg);
   padding: 0;
@@ -440,23 +441,23 @@
   overflow: hidden;
 }
 
-#access-modal::backdrop {
+.access-modal::backdrop {
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
 }
 
-#access-modal .modal-content {
+.access-modal .modal-content {
   padding: 24px;
   text-align: left;
 }
 
-#access-modal h3 {
+.access-modal h3 {
   margin: 0 0 20px 0;
   font-size: 1.25rem;
   color: var(--text-strong);
 }
 
-#access-modal h4 {
+.access-modal h4 {
   margin: 16px 0 8px;
   font-size: 0.9rem;
   color: var(--text-muted);
@@ -465,13 +466,13 @@
 }
 
 /* Liste des invités */
-#access-modal-content ul {
+.access-modal-content ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-#access-modal-content li {
+.access-modal-content li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -481,7 +482,7 @@
 }
 
 /* Bouton "Virer" */
-#access-modal-content li button {
+.access-modal-content li button {
   background: var(--surface);
   color: var(--text-muted);
   border: none;
@@ -494,31 +495,13 @@
     color var(--transition);
 }
 
-#access-modal-content li button:hover {
+.access-modal-content li button:hover {
   background: var(--red-light);
   color: var(--red);
 }
 
-/* Sélecteur d'utilisateur */
-#user-select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--rounded-md);
-  margin-bottom: 15px;
-  font-size: 1rem;
-  color: var(--text);
-  background: var(--white);
-}
-
-#user-select:focus {
-  outline: none;
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px var(--red-ring);
-}
-
 /* Pied de page et boutons */
-#access-modal footer {
+.access-modal footer {
   display: flex;
   justify-content: flex-end;
   margin-top: 24px;
@@ -526,7 +509,7 @@
   border-top: 1px solid var(--border);
 }
 
-#close-access-modal {
+.close-access-modal {
   background: var(--text);
   color: var(--white);
   padding: 10px 20px;
@@ -537,6 +520,33 @@
   transition: background var(--transition);
 }
 
-#close-access-modal:hover {
+.close-access-modal:hover {
   background: var(--text-strong);
+}
+
+.tag-option input[type="radio"] {
+  display: none;
+}
+
+.tag-option {
+  display: inline-block;
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--rounded-md);
+  cursor: pointer;
+  transition: all var(--transition);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 4px;
+}
+
+.tag-option:hover {
+  border-color: var(--text-muted);
+}
+
+.tag-option:has(input[type="radio"]:checked) {
+  background: var(--text);
+  color: var(--white);
+  border-color: var(--text);
 }

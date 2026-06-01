@@ -136,26 +136,31 @@ export class AlbumEditView {
     if (!this.tagModal) return;
     this.tagModal.dataset.currentPhotoId = photoId;
     this.tagModal.style.display = "flex";
+
     const allTags = JSON.parse(
       document.getElementById("all-tags-data").textContent,
     );
-    this.tagListContainer.textContent = "";
+    this.tagListContainer.innerHTML = "";
+
     allTags.forEach((tag) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "tag-btn";
-      btn.textContent = tag.name;
-      btn.addEventListener("click", () => {
-        this.toggleTag(tag.id, photoId);
-        btn.classList.toggle("tag-active");
-        this.updateTagsOnImage(
-          photoId,
-          tag.id,
-          tag.name,
-          btn.classList.contains("tag-active"),
-        );
+      const label = document.createElement("label");
+      label.className = "tag-btn";
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "photo-tag-selection";
+      radio.value = tag.id;
+
+      radio.addEventListener("change", () => {
+        if (radio.checked) {
+          this.toggleTag(tag.id, photoId);
+          this.updateTagsOnImage(photoId, tag.id, tag.name, true);
+        }
       });
-      this.tagListContainer.appendChild(btn);
+
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(tag.name));
+      this.tagListContainer.appendChild(label);
     });
   }
 
@@ -164,23 +169,22 @@ export class AlbumEditView {
       `.photo-card[data-photo-id="${photoId}"]`,
     );
     if (!photoCard) return;
+
     let tagsContainer = photoCard.querySelector(".photo-tags-display");
     if (!tagsContainer) {
       tagsContainer = document.createElement("div");
       tagsContainer.className = "photo-tags-display";
       photoCard.querySelector("img").after(tagsContainer);
     }
+
+    tagsContainer.textContent = "";
+
     if (isActive) {
-      if (!tagsContainer.querySelector(`[data-tag-id="${tagId}"]`)) {
-        const tagBadge = document.createElement("span");
-        tagBadge.className = "photo-tag-badge";
-        tagBadge.dataset.tagId = tagId;
-        tagBadge.textContent = tagName;
-        tagsContainer.appendChild(tagBadge);
-      }
-    } else {
-      const tagBadge = tagsContainer.querySelector(`[data-tag-id="${tagId}"]`);
-      if (tagBadge) tagBadge.remove();
+      const tagBadge = document.createElement("span");
+      tagBadge.className = "photo-tag-badge";
+      tagBadge.dataset.tagId = tagId;
+      tagBadge.textContent = tagName;
+      tagsContainer.appendChild(tagBadge);
     }
   }
 

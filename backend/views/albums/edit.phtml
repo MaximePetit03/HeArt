@@ -42,16 +42,17 @@
                     </button>
                 </div>
 
-                <dialog id="access-modal" class="modal-dialog">
+                <dialog id="access-modal" class=" access-modal modal-dialog">
                     <article class="modal-content">
                         <header>
                             <h3>Gestion des accès restreints</h3>
                         </header>
 
-                        <div id="access-modal-content"></div>
+                        <div id="access-modal-content" class="access-modal-content"></div>
 
                         <footer>
-                            <button type="button" id="close-access-modal" class="btn-primary">Fermer</button>
+                            <button type="button" id="close-access-modal"
+                                class="close-access-modal btn-primary">Fermer</button>
                         </footer>
                     </article>
                 </dialog>
@@ -96,7 +97,7 @@
             <?php endforeach; ?>
         </div>
     </div>
-    <div id="tag-modal" class="modal-overlay">
+    <div id="tag-modal" class="tag-modal modal-overlay">
         <div class="modal-content">
             <h3>Choisir des tags</h3>
             <div class="tag-list-grid" id="js-tag-list"></div>
