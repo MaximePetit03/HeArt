@@ -301,3 +301,5 @@ INSERT INTO tag (name) VALUES
 ('Informatique'),
 ('Meme'),
 ('JeuxVideo');
+
+ALTER TABLE album ADD COLUMN sharing_token VARCHAR(255) DEFAULT NULL;

@@ -382,4 +382,56 @@ class AlbumController extends AbstractController {
         }
         exit;
     }
+
+    public function getShareLink(): void {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $albumId = $data['albumId'] ?? null;
+
+        if (!$albumId) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID manquant']);
+            return;
+        }
+
+        $album = $this->albumManager->findById($albumId);
+        if (!$album) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Album non trouvé']);
+            return;
+        }
+
+        $token = $album->getSharingToken();
+        if (empty($token)) {
+            $token = $this->albumManager->generateSharingToken($albumId);
+        }
+
+        $link = BASE_URL . '/albums/join?token=' . $token;
+
+        header('Content-Type: application/json');
+        echo json_encode(['link' => $link]);
+        exit;
+    }
+
+    public function joinByToken(): void {
+        $token = $_GET['token'] ?? null;
+        $album = $this->albumManager->findByToken($token);
+
+        if ($album && $album->getVisibility() === 'restricted') {
+            $userId = $_SESSION['user_id'] ?? null;
+            
+            if ($userId) {
+                if (!$this->albumManager->isInvited($album->getId(), $userId)) {
+                    $this->albumManager->addInvitation($album->getId(), $userId);
+                }
+                
+                header('Location: ' . BASE_URL . '/albums/show?id=' . $album->getId());
+                exit;
+            } else {
+                header('Location: ' . BASE_URL . '/login');
+                exit;
+            }
+        }
+        
+        die("Lien invalide, album non restreint ou erreur d'accès.");
+    }
 }

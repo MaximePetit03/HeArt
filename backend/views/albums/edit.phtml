@@ -1,9 +1,17 @@
 <section class="edit-album-container js-edit-album-page" data-album-id="<?= (int)$album->getId() ?>">
 
     <header class="album-page-header">
-        <h1 class="large-title">Modifier : <?= htmlspecialchars($album->getTitle()) ?></h1>
-        <p class="album-meta">Par <span class="username"><?= htmlspecialchars($album->getUsername()) ?></span></p>
+        <div class="album-header">
+            <h1 class="large-title">Modifier : <?= htmlspecialchars($album->getTitle()) ?></h1>
 
+            <div id="share-container" class="<?= $album->getVisibility() === 'restricted' ? '' : 'hidden' ?>">
+                <button type="button" id="btn-copy-link" class="btn-share" data-album-id="<?= (int)$album->getId() ?>">
+                    <i class="fa-solid fa-copy"></i> Copier le lien
+                </button>
+                <input type="text" id="share-link-input">
+            </div>
+        </div>
+        <p class="album-meta">Par <span class="username"><?= htmlspecialchars($album->getUsername()) ?></span></p>
         <div class="upload-section">
             <input type="file" id="js-upload-input" class="js-photo-upload-input" name="photos[]" multiple
                 accept="image/jpeg, image/png, image/webp" style="display: none;">
@@ -17,63 +25,64 @@
                 </div>
             </button>
         </div>
+    </header>
 
-        <form action="<?= BASE_URL ?>/albums/update" method="POST">
-            <input type="hidden" name="album_id" value="<?= (int)$album->getId() ?>">
+    <form action="<?= BASE_URL ?>/albums/update" method="POST">
+        <input type="hidden" name="album_id" value="<?= (int)$album->getId() ?>">
 
-            <div class="form-row">
-                <div class="album-visibility-selector">
-                    <label for="album-visibility">Visibilité de l'album :</label>
-                    <select name="visibility" id="album-visibility" class="js-change-album-visibility">
-                        <option value="public" <?= $album->getVisibility() === 'public' ? 'selected' : '' ?>>
-                            Public
-                        </option>
-                        <option value="private" <?= $album->getVisibility() === 'private' ? 'selected' : '' ?>>
-                            Privé
-                        </option>
-                        <option value="restricted" <?= $album->getVisibility() === 'restricted' ? 'selected' : '' ?>>
-                            Restreint
-                        </option>
-                    </select>
+        <div class="form-row">
+            <div class="album-visibility-selector">
+                <label for="album-visibility">Visibilité de l'album :</label>
+                <select name="visibility" id="album-visibility" class="js-change-album-visibility">
+                    <option value="public" <?= $album->getVisibility() === 'public' ? 'selected' : '' ?>>
+                        Public
+                    </option>
+                    <option value="private" <?= $album->getVisibility() === 'private' ? 'selected' : '' ?>>
+                        Privé
+                    </option>
+                    <option value="restricted" <?= $album->getVisibility() === 'restricted' ? 'selected' : '' ?>>
+                        Restreint
+                    </option>
+                </select>
 
-                    <button type="button" id="btn-manage-access" style="display: none; margin-top: 10px;"
-                        class="btn btn-secondary">
-                        <i class="fa-solid fa-users-gear" aria-hidden="true"></i> Gérer les accès
-                    </button>
-                </div>
-
-                <dialog id="access-modal" class=" access-modal modal-dialog">
-                    <article class="modal-content">
-                        <header>
-                            <h3>Gestion des accès restreints</h3>
-                        </header>
-
-                        <div id="access-modal-content" class="access-modal-content"></div>
-
-                        <footer>
-                            <button type="button" id="close-access-modal"
-                                class="close-access-modal btn-primary">Fermer</button>
-                        </footer>
-                    </article>
-                </dialog>
-
-                <div class="album-visibility-selector">
-                    <label for="tags">Tags de l'album :</label>
-                    <select name="tags[]" id="tags" multiple class="form-control">
-                        <?php foreach ($allTags as $tag): ?>
-                        <option value="<?= $tag->getId() ?>"
-                            <?= in_array($tag->getId(), $currentTagIds) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($tag->getName()) ?>
-                        </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-
+                <button type="button" id="btn-manage-access" style="display: none; margin-top: 10px;"
+                    class="btn btn-secondary">
+                    <i class="fa-solid fa-users-gear" aria-hidden="true"></i> Gérer les accès
+                </button>
             </div>
 
-            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-        </form>
+            <dialog id="access-modal" class=" access-modal modal-dialog">
+                <article class="modal-content">
+                    <header>
+                        <h3>Gestion des accès restreints</h3>
+                    </header>
+
+                    <div id="access-modal-content" class="access-modal-content"></div>
+
+                    <footer>
+                        <button type="button" id="close-access-modal"
+                            class="close-access-modal btn-primary">Fermer</button>
+                    </footer>
+                </article>
+            </dialog>
+
+            <div class="album-visibility-selector">
+                <label for="tags">Tags de l'album :</label>
+                <select name="tags[]" id="tags" multiple class="form-control">
+                    <?php foreach ($allTags as $tag): ?>
+                    <option value="<?= $tag->getId() ?>"
+                        <?= in_array($tag->getId(), $currentTagIds) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($tag->getName()) ?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+    </form>
     </header>
 
     <div class="photos-grid-container">

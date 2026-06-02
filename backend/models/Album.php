@@ -11,6 +11,7 @@ class Album extends AbstractModel {
     protected ?int $userId = null;
     protected ?string $username = null;
     private array $tags = [];
+    protected ?string $sharing_token = null;
 
     public function __construct(
         string $title = '',
@@ -81,5 +82,13 @@ class Album extends AbstractModel {
         }
         
         return $date->format('d/m/Y');
+    }
+
+    public function getSharingToken(): ?string {
+        return $this->sharing_token;
+    }
+
+    public function setSharingToken(?string $sharing_token): void {
+        $this->sharing_token = $sharing_token;
     }
 }

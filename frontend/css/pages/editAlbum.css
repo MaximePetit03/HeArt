@@ -30,6 +30,47 @@
   color: var(--text-dark);
 }
 
+/* Alignement du titre et du bouton de partage */
+.album-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.btn-share {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  color: #444;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-share:hover {
+  background: #e60023;
+  color: white;
+  border-color: #e60023;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#share-link-input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
 /* ==========================================================================
    2. ZONE D'UPLOAD COMPACTE (STYLE DISCRET AU-DESSUS)
    ========================================================================== */
@@ -153,20 +194,14 @@
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  opacity: 0;
-  transform: translateY(-5px);
+  transform: translateY(0px);
   transition: all 0.25s ease;
   z-index: 10;
 }
 
 .btn-delete-photo:hover {
-  background-color: #e60023; /* Rouge écarlate de suppression */
+  background-color: #e60023;
   color: white;
-}
-
-.photo-card:hover .btn-delete-photo {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .upload-dropzone * {
@@ -220,9 +255,10 @@
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
-/* --- Style du bouton Enregistrer --- */
 .btn-primary {
-  display: inline-block;
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
   background-color: #e60023;
   color: white;
   padding: 12px 24px;
@@ -273,16 +309,15 @@
   display: none;
 }
 
-/* Force les boutons à s'aligner sur une seule ligne et supprime le chevauchement */
 .photo-actions {
   position: absolute;
   top: 10px;
   right: 10px;
+  left: auto;
   display: flex !important;
   flex-direction: row !important;
   gap: 8px !important;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  opacity: 1 !important;
   z-index: 10;
   background: none !important;
   box-shadow: none !important;

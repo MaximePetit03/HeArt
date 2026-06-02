@@ -11,6 +11,9 @@ export class AlbumEditView {
     );
     this.accessModal = document.getElementById("access-modal");
     this.btnManageAccess = document.getElementById("btn-manage-access");
+    this.btnCopyLink = document.getElementById("btn-copy-link");
+    this.shareLinkInput = document.getElementById("share-link-input");
+    this.shareContainer = document.getElementById("share-container");
   }
 
   init() {
@@ -48,6 +51,10 @@ export class AlbumEditView {
       this.btnManageAccess.addEventListener("click", () =>
         this.openAccessModal(),
       );
+    }
+
+    if (this.btnCopyLink) {
+      this.btnCopyLink.addEventListener("click", () => this.copyShareLink());
     }
   }
 
@@ -238,9 +245,17 @@ export class AlbumEditView {
   }
 
   toggleAccessButtonVisibility(visibility) {
+    const isRestricted = visibility === "restricted";
+
     if (this.btnManageAccess) {
       this.btnManageAccess.style.display =
         visibility === "restricted" ? "inline-block" : "none";
+    }
+
+    if (this.shareContainer) {
+      isRestricted
+        ? this.shareContainer.classList.remove("hidden")
+        : this.shareContainer.classList.add("hidden");
     }
   }
 
@@ -326,5 +341,36 @@ export class AlbumEditView {
       body: JSON.stringify({ album_id: this.albumId, user_id: userId }),
     });
     this.openAccessModal();
+  }
+
+  async copyShareLink() {
+    try {
+      const response = await fetch("/albums/get-share-link", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ albumId: this.albumId }),
+      });
+
+      const data = await response.json();
+
+      if (data.link) {
+        await navigator.clipboard.writeText(data.link);
+
+        const originalHTML = this.btnCopyLink.innerHTML;
+        this.btnCopyLink.innerHTML =
+          '<i class="fa-solid fa-check"></i> Copié !';
+
+        setTimeout(() => {
+          this.btnCopyLink.innerHTML = originalHTML;
+        }, 2000);
+      } else {
+        throw new Error("Lien introuvable");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la copie :", error);
+      alert("Impossible de copier le lien.");
+    }
   }
 }

@@ -66,6 +66,8 @@ $router->get('/albums/getInvitations', 'AlbumController', 'getInvitations');
 $router->post('/albums/inviteUser', 'AlbumController', 'inviteUser');
 $router->post('/albums/removeGuest', 'AlbumController', 'removeGuest');
 $router->get('/users/list', 'UserController', 'list');
+$router->post('/albums/get-share-link', 'AlbumController', 'getShareLink');
+$router->get('/albums/join', 'AlbumController', 'joinByToken');
 
 try {
     $router->dispatch();

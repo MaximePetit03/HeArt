@@ -1,55 +1,47 @@
 /* ===================================
-HeArt — responsive.css
-md = 768px   lg = 1024px   sm = 640px
-====================================== */
+   HeArt — responsive.css (Optimisé)
+   =================================== */
 
-/* -- lg ≤ 1024px (Tablette & Mobile) -- */
+/* 1. TABLETTES & PETITS ÉCRANS (< 1024px) */
 @media (max-width: 1024px) {
-  /* Grilles existantes */
   .albums-grid {
     columns: 3 220px;
   }
   .photos-grid {
-    columns: 2 180px;
+    column-count: 3;
   }
   .photo-detail {
     grid-template-columns: 1fr 320px;
   }
 
-  /* === NOUVEAU MENU RESPONSIVE === */
+  /* Navbar Responsive */
   .navbar {
     position: relative;
     display: flex;
-    justify-content: flex-end; /* Pousse le burger tout à droite */
+    justify-content: flex-end;
     align-items: center;
     padding: 1rem 1.5rem;
   }
-
-  /* Titre au centre exact de la nav */
   .navbar .title {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     margin: 0;
   }
-
-  /* Afficher l'icône du menu burger */
   .burger-menu-btn {
     display: block !important;
     font-size: 1.75rem;
     cursor: pointer;
     z-index: 1000;
-    color: inherit; /* S'adapte à ta couleur de texte */
   }
 
-  /* Menu déroulant (caché par défaut) */
   .navbar-links {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: #ffffff; /* Ajuste si tu as un mode sombre (ex: var(--bg-color)) */
+    background-color: #ffffff;
     flex-direction: column;
     align-items: center;
     padding: 1.5rem 0;
@@ -57,252 +49,128 @@ md = 768px   lg = 1024px   sm = 640px
     z-index: 999;
     gap: 1.5rem;
   }
-
-  /* Quand la checkbox est cochée, on affiche le menu */
   .burger-checkbox:checked ~ .navbar-links {
     display: flex;
   }
-
-  /* S'assurer que tous les éléments sont visibles à l'intérieur */
-  .navbar-links a,
-  .navbar-user {
-    display: block !important; /* Écrase d'éventuelles vieilles règles */
+  .burger-checkbox:checked ~ .burger-menu-btn i::before {
+    content: "\f00d";
   }
 
-  /* Bonus : Change l'icône burger en croix quand le menu est ouvert */
-  .burger-checkbox:checked ~ .burger-menu-btn i::before {
-    content: "\f00d"; /* Code Unicode FontAwesome de 'fa-xmark' */
+  .photo-actions {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 0 0 0 12px;
+    padding: 4px;
+    gap: 6px !important;
+  }
+
+  .photo-card:hover .photo-actions,
+  .photo-card .photo-actions {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .photo-actions button {
+    width: 36px !important;
+    height: 36px !important;
+    opacity: 1 !important;
   }
 }
 
-/* -- md ≤ 768px (Mobile) -- */
+/* 2. TABLETTES / GRAND MOBILE (< 768px) */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 0.75rem 1rem;
+  /* Grilles & Contenu */
+  .photos-grid {
+    column-count: 2;
   }
-
-  .main-content {
-    padding: 1.25rem 1rem;
-  }
-
-  /* Grilles */
   .albums-grid {
     columns: 2 150px;
     column-gap: 0.75rem;
   }
-  .photos-grid {
-    columns: 2 130px;
-    column-gap: 0.75rem;
-  }
 
-  /* Photo détail empilé */
   .photo-detail {
     grid-template-columns: 1fr;
   }
   .photo-sidebar {
     position: static;
-    top: auto;
   }
 
-  /* Auth (MODIFIÉ ICI) */
-  .auth-card,
-  .auth-container {
-    padding: 2rem 1.5rem;
-    margin: 2rem auto;
+  /* Layout Global */
+  .main-content {
+    padding: 1.25rem 1rem;
   }
-
-  /* Formulaires */
-  .album-form,
-  .photo-upload-form {
-    padding: 1.5rem 1.25rem;
-  }
-
-  .visibility-options {
-    flex-direction: column;
-  }
-
-  /* Page header */
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-
-  /* Toolbar */
+  .page-header,
   .albums-toolbar {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.75rem;
   }
-  .search-input {
-    width: 100%;
-    min-width: unset;
+
+  /* Formulaires */
+  .edit-album-container,
+  .create-album-container {
+    padding: 20px 15px;
+    margin: 20px 16px;
   }
-  .filter-select {
+  .form-row,
+  .form-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .album-visibility-selector {
+    width: 100% !important;
+  }
+  .btn-primary,
+  .btn-submit {
     width: 100%;
+    text-align: center;
+  }
+
+  .photos-grid {
+    column-count: 2 !important;
+    column-gap: 10px !important;
+  }
+
+  .photo-card {
+    margin-bottom: 10px !important;
   }
 }
 
-/* -- sm ≤ 640px -- */
-@media (max-width: 640px) {
+/* 3. MOBILES (< 480px) */
+@media (max-width: 480px) {
+  .photos-grid,
   .albums-grid {
-    columns: 1;
+    column-count: 1;
   }
-  .photos-grid {
-    columns: 1;
-  }
+
   h1 {
-    font-size: 1.75rem;
-  }
-  .title {
-    font-size: 1.4rem;
-  }
-  /* Auth */
-  .auth-card,
-  .auth-container {
-    padding: 1.75rem 1.25rem;
-    margin: 1rem auto;
-    border-radius: 8px;
+    font-size: 1.5rem;
+    text-align: center;
   }
   .auth-brand {
     font-size: 2rem;
   }
-}
-
-@media (max-width: 768px) {
-  .create-album-container {
-    margin: 20px 16px;
-    padding: 20px;
-    border-radius: var(--rounded-md); /* Un poil moins arrondi sur mobile */
-  }
-
-  .form-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .form-actions {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 12px;
-    padding-top: 20px;
-  }
-
-  .btn-submit {
-    justify-content: center;
-    padding: 14px;
-  }
-
-  .btn-cancel {
-    text-align: center;
-    padding: 12px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .photos-grid {
-    column-count: 3;
-  }
-}
-
-@media (max-width: 768px) {
-  .photos-grid {
-    column-count: 2;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .photos-grid {
-    column-count: 1;
-  }
-}
-
-/* ==========================================================================
-   ADAPTATION RESPONSIVE (Réduction fluide des colonnes)
-   ========================================================================== */
-
-/* Écrans larges : 5 colonnes */
-@media (max-width: 1400px) {
-  .photos-grid {
-    column-count: 4;
-  }
-}
-
-/* Écrans moyens : 3 colonnes */
-@media (max-width: 1000px) {
-  .photos-grid {
-    column-count: 3;
-  }
-}
-
-/* Tablettes : 2 colonnes */
-@media (max-width: 700px) {
-  .photos-grid {
-    column-count: 2;
-  }
-  .edit-album-container {
-    padding: 20px 10px;
-  }
-}
-
-/* Mobiles : 1 colonne */
-@media (max-width: 450px) {
-  .photos-grid {
-    column-count: 1;
-  }
-}
-
-/* ==========================================================================
-   RESPONSIVE FORMULAIRE & HEADER (Sans toucher aux images)
-   ========================================================================== */
-
-@media (max-width: 768px) {
-  /* Réduction des marges globales pour gagner de la place */
-  .edit-album-container {
-    padding: 20px 15px;
-  }
-
-  /* Le header devient plus compact */
-  .album-page-header .large-title {
-    font-size: 2rem;
-  }
-
-  /* La zone d'upload devient plus étroite sur mobile */
-  .upload-dropzone {
-    max-width: 100%;
-    padding: 20px 10px;
-  }
-
-  /* Le formulaire passe en colonne unique */
-  .form-row {
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 25px;
-  }
-
-  /* Les sélecteurs prennent toute la largeur disponible */
-  .album-visibility-selector {
-    width: 100% !important;
-    max-width: 100%;
-  }
-
-  /* Bouton enregistrer en pleine largeur pour faciliter le clic */
-  .btn-primary {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-/* Ajustement pour les très petits écrans */
-@media (max-width: 480px) {
   .dropzone-title {
     font-size: 1rem;
   }
-
   .dropzone-subtitle {
     font-size: 0.8rem;
+  }
+
+  .photos-grid {
+    column-count: 1 !important;
+  }
+}
+
+@media (hover: none) {
+  .photo-card:hover {
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .btn-delete-photo {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 }

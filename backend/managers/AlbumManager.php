@@ -26,12 +26,9 @@ class AlbumManager extends AbstractManager {
     }
 
     public function findById(int $id): object|false {
-        $sql = "SELECT album.*, user.username
-                FROM album
+        $query = $this->db->prepare("SELECT album.*, user.username FROM album
                 LEFT JOIN user ON album.user_id = user.id
-                WHERE album.id = :id";
-                
-        $query = $this->db->prepare($sql);
+                WHERE album.id = :id");
         $query->execute(['id' => $id]);
         $item = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -49,6 +46,7 @@ class AlbumManager extends AbstractManager {
         $album->setId((int)$item["id"]);
         $album->setCreatedAt($item["created_at"]);
         $album->setUsername($item["username"] ?? 'Utilisateur inconnu');
+        $album->setSharingToken($item["sharing_token"] ?? null);
 
         return $album;
     }
@@ -86,23 +84,24 @@ class AlbumManager extends AbstractManager {
     }
     
     public function create(string $title, ?string $description, string $visibility, int $userId): int {
-        $sql = "INSERT INTO album (title, description, visibility, user_id, created_at)
-                VALUES (:title, :description, :visibility, :user_id, NOW())";
-                
-        $query = $this->db->prepare($sql);
+        $sharingToken = bin2hex(random_bytes(16));
+
+        $query = $this->db->prepare("INSERT INTO album (title, description, visibility, user_id, sharing_token, created_at)
+                VALUES (:title, :description, :visibility, :user_id, :sharing_token, NOW())");
         
         $query->execute([
-            'title'       => $title,
-            'description' => $description,
-            'visibility'  => $visibility,
-            'user_id'     => $userId
+            'title'         => $title,
+            'description'   => $description,
+            'visibility'    => $visibility,
+            'user_id'       => $userId,
+            'sharing_token' => $sharingToken
         ]);
 
         return (int)$this->db->lastInsertId();
     }
 
     public function updateVisibility(int $id, string $visibility): bool {
-        // 1. Log pour vérifier ce qui arrive réellement
+        // Log pour vérifier ce qui arrive réellement
         error_log("Tentative de maj Album ID $id avec visibilité '$visibility'");
 
         $query = $this->db->prepare("UPDATE album SET visibility = :visibility WHERE id = :id");
@@ -111,7 +110,7 @@ class AlbumManager extends AbstractManager {
             ':id' => $id
         ]);
 
-        // 2. Vérifier si une ligne a bien été modifiée
+        // Vérifier si une ligne a bien été modifiée
         $count = $query->rowCount();
         error_log("Lignes modifiées : " . $count);
 
@@ -249,5 +248,34 @@ class AlbumManager extends AbstractManager {
         }
 
         return $albums;
+    }
+
+    public function generateSharingToken(int $albumId): string {
+        $token = bin2hex(random_bytes(16));// Génère une chaîne unique
+        $query = $this->db->prepare("UPDATE album SET sharing_token = ? WHERE id = ?");
+        $query->execute([$token, $albumId]);
+        return $token;
+    }
+
+    public function findByToken(string $token): ?Album {
+        $query = $this->db->prepare("SELECT * FROM album WHERE sharing_token = ?");
+        $query->execute([$token]);
+        $item = $query->fetch(PDO::FETCH_ASSOC);
+
+        if (!$item) {
+            return null;
+        }
+
+        $album = new Album(
+            $item["title"],
+            $item["description"] ?? '',
+            $item["visibility"],
+            (int)$item["user_id"]
+        );
+
+        $album->setId((int)$item["id"]);
+        $album->setSharingToken($item["sharing_token"]);
+
+        return $album;
     }
 }
