@@ -1,4 +1,5 @@
-<section class="edit-album-container js-edit-album-page" data-album-id="<?= (int)$album->getId() ?>">
+<section class="edit-album-container js-edit-album-page" data-album-id="<?= (int)$album->getId() ?>"
+    data-current-user-id="<?= (int)$_SESSION['user_id'] ?>">
 
     <header class="album-page-header">
         <div class="album-header">
@@ -51,21 +52,6 @@
                 </button>
             </div>
 
-            <dialog id="access-modal" class=" access-modal modal-dialog">
-                <article class="modal-content">
-                    <header>
-                        <h3>Gestion des accès restreints</h3>
-                    </header>
-
-                    <div id="access-modal-content" class="access-modal-content"></div>
-
-                    <footer>
-                        <button type="button" id="close-access-modal"
-                            class="close-access-modal btn-primary">Fermer</button>
-                    </footer>
-                </article>
-            </dialog>
-
             <div class="album-visibility-selector">
                 <label for="tags">Tags de l'album :</label>
                 <select name="tags[]" id="tags" multiple class="form-control">
@@ -84,6 +70,22 @@
         <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
     </form>
     </header>
+
+    <dialog class="access-modal modal-dialog">
+        <article class="modal-content">
+            <header>
+                <h3>Gestion des accès restreints</h3>
+            </header>
+
+            <div class="js-access-modal-content"></div>
+
+            <footer>
+                <button type="button" class="js-close-access-modal btn-primary">
+                    Fermer
+                </button>
+            </footer>
+        </article>
+    </dialog>
 
     <div class="photos-grid-container">
         <div class="photos-grid js-photos-grid">

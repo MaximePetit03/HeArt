@@ -9,11 +9,11 @@ export class AlbumEditView {
     this.albumVisibilitySelect = document.querySelector(
       ".js-change-album-visibility",
     );
-    this.accessModal = document.getElementById("access-modal");
+    this.accessModal = document.querySelector(".access-modal");
     this.btnManageAccess = document.getElementById("btn-manage-access");
     this.btnCopyLink = document.getElementById("btn-copy-link");
-    this.shareLinkInput = document.getElementById("share-link-input");
     this.shareContainer = document.getElementById("share-container");
+    this.shareLinkInput = document.getElementById("share-link-input");
   }
 
   init() {
@@ -38,9 +38,9 @@ export class AlbumEditView {
       });
     }
 
-    const closeAccessModalButton =
-      document.getElementById("close-access-modal");
-
+    const closeAccessModalButton = document.querySelector(
+      ".js-close-access-modal",
+    );
     if (closeAccessModalButton) {
       closeAccessModalButton.addEventListener("click", () => {
         this.accessModal.close();
@@ -260,87 +260,151 @@ export class AlbumEditView {
   }
 
   async openAccessModal() {
-    const modalContent = document.getElementById("access-modal-content");
-    modalContent.textContent = "";
     this.accessModal.showModal();
+    const modalContent = document.querySelector(".js-access-modal-content");
+    modalContent.innerHTML = "<p>Chargement des données...</p>";
 
     try {
-      const [guestsResponse, usersResponse] = await Promise.all([
-        fetch(`/albums/getInvitations?id=${this.albumId}`),
-        fetch("/users/list"),
-      ]);
-      const guestList = await guestsResponse.json();
-      const allUsersList = await usersResponse.json();
+      const [guests, users] = await this.fetchAccessData();
+      modalContent.textContent = "";
 
-      const currentGuestsTitle = document.createElement("h4");
-      currentGuestsTitle.textContent = "Invités actuels";
-      modalContent.appendChild(currentGuestsTitle);
-
-      const guestsListContainer = document.createElement("ul");
-
-      if (guestList.length === 0) {
-        const noGuestItem = document.createElement("li");
-        noGuestItem.textContent = "Aucun invité";
-        guestsListContainer.appendChild(noGuestItem);
-      } else {
-        guestList.forEach((guest) => {
-          const guestItem = document.createElement("li");
-          guestItem.textContent = guest.username + " ";
-
-          const removeGuestButton = document.createElement("button");
-          removeGuestButton.textContent = "Retirer du groupe";
-          removeGuestButton.addEventListener("click", () =>
-            this.removeGuest(guest.id),
-          );
-
-          guestItem.appendChild(removeGuestButton);
-          guestsListContainer.appendChild(guestItem);
-        });
-      }
-      modalContent.appendChild(guestsListContainer);
-
-      const addUserTitle = document.createElement("h4");
-      addUserTitle.textContent = "Ajouter un utilisateur";
-      modalContent.appendChild(addUserTitle);
-
-      const userSelect = document.createElement("select");
-      userSelect.id = "user-select";
-      allUsersList.forEach((user) => {
-        const userOption = document.createElement("option");
-        userOption.value = user.id;
-        userOption.textContent = user.username;
-        userSelect.appendChild(userOption);
-      });
-      modalContent.appendChild(userSelect);
-
-      const addButton = document.createElement("button");
-      addButton.textContent = "Ajouter";
-      addButton.className = "btn-primary";
-      addButton.addEventListener("click", () => this.addGuest());
-      modalContent.appendChild(addButton);
+      this.renderGuestList(guests, modalContent);
+      this.renderAddUserForm(users, modalContent);
     } catch (error) {
-      console.error("Détail de l'erreur :", error);
-      modalContent.textContent = "Erreur lors du chargement.";
+      console.error("Erreur :", error);
+      modalContent.textContent = "Erreur lors du chargement des accès.";
     }
   }
 
-  async addGuest() {
-    const userId = document.getElementById("user-select").value;
-    await fetch("/albums/inviteUser", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ album_id: this.albumId, user_id: userId }),
+  async fetchAccessData() {
+    const [guestsResponse, usersResponse] = await Promise.all([
+      fetch(`/albums/getInvitations?id=${this.albumId}&t=${Date.now()}`),
+      fetch("/users/list"),
+    ]);
+    return [await guestsResponse.json(), await usersResponse.json()];
+  }
+
+  renderGuestList(guests, container) {
+    const currentUserId = parseInt(this.pageContainer.dataset.currentUserId);
+    const title = document.createElement("h4");
+    title.textContent = "Invités actuels";
+    container.appendChild(title);
+
+    const list = document.createElement("ul");
+    if (guests.length === 0) {
+      list.innerHTML = "<li>Aucun invité</li>";
+    } else {
+      guests.forEach((guest) => {
+        const item = document.createElement("li");
+        item.textContent = guest.username + " ";
+
+        if (parseInt(guest.id) !== currentUserId) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = "Retirer du groupe";
+          btn.className = "btn-delete-small";
+          btn.addEventListener("click", () => this.removeGuest(guest.id));
+          item.appendChild(btn);
+        } else {
+          const badge = document.createElement("span");
+          badge.textContent = " (Vous)";
+          badge.style.fontSize = "0.8em";
+          badge.style.color = "#888";
+          item.appendChild(badge);
+        }
+        list.appendChild(item);
+      });
+    }
+    container.appendChild(list);
+  }
+
+  renderAddUserForm(users, container) {
+    const title = document.createElement("h4");
+    title.textContent = "Ajouter un utilisateur";
+    container.appendChild(title);
+
+    const select = document.createElement("select");
+    select.className = "js-user-select";
+    select.id = "user-select";
+
+    users.forEach((user) => {
+      const option = document.createElement("option");
+      option.value = user.id;
+      option.textContent = user.username;
+      select.appendChild(option);
     });
-    this.openAccessModal();
+    container.appendChild(select);
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = "Ajouter";
+    btn.className = "btn-primary";
+    btn.addEventListener("click", () => this.addGuest());
+    container.appendChild(btn);
+  }
+
+  async addGuest() {
+    const userSelect = document.querySelector(".js-user-select");
+    const userId = userSelect ? userSelect.value : null;
+
+    if (!userId) {
+      alert("Veuillez sélectionner un utilisateur.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/albums/inviteUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          album_id: this.albumId,
+          user_id: parseInt(userId),
+        }),
+      });
+
+      const text = await response.text();
+      console.log("Réponse brute du serveur :", text);
+
+      const result = JSON.parse(text);
+
+      if (result.success) {
+        await this.openAccessModal();
+      } else {
+        alert(
+          "Erreur : " +
+            (result.message || "Impossible d'ajouter l'utilisateur."),
+        );
+      }
+    } catch (error) {
+      console.error("Erreur complète :", error);
+      alert("Détail de l'erreur : " + error.message);
+    }
   }
 
   async removeGuest(userId) {
-    await fetch("/albums/removeGuest", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ album_id: this.albumId, user_id: userId }),
-    });
-    this.openAccessModal();
+    try {
+      const response = await fetch("/albums/removeGuest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ album_id: this.albumId, user_id: userId }),
+      });
+
+      const text = await response.text();
+      console.log("Réponse brute du serveur :", text);
+
+      const result = JSON.parse(text);
+
+      if (result.success) {
+        await this.openAccessModal();
+      } else {
+        alert("Erreur serveur : " + (result.message || "Erreur inconnue"));
+      }
+    } catch (error) {
+      console.error("Erreur détaillée :", error);
+      alert("Détail de l'erreur : " + error.message);
+    }
   }
 
   async copyShareLink() {

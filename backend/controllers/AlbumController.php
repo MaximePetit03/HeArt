@@ -129,7 +129,7 @@ class AlbumController extends AbstractController {
             'extraCss' => 'editAlbum',
             'photos'   => $photos,
             'allTags'  => $allTags,
-            'currentTagIds' => $currentTagIds
+            'currentTagIds' => $currentTagIds,
         ]);
     }
 
@@ -324,7 +324,8 @@ class AlbumController extends AbstractController {
             'extraCss' => 'detailAlbum',
             'photos' => $photos,
             'photoTags' => $photoTags,
-            'allTags' => $allTags
+            'allTags' => $allTags,
+            'isGuest' => ($isInvited && !$isOwner)
         ]);
     }
 
@@ -346,6 +347,7 @@ class AlbumController extends AbstractController {
     }
 
     public function inviteUser(): void {
+        file_put_contents('debug.log', "Requête reçue !\n", FILE_APPEND);
         $jsonInput = file_get_contents('php://input');
         $data = json_decode($jsonInput, true);
         
@@ -365,20 +367,47 @@ class AlbumController extends AbstractController {
     }
 
     public function removeGuest(): void {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $albumId = (int)($data['album_id'] ?? 0);
+        $targetUserId = (int)($data['user_id'] ?? 0);
+        $currentUserId = (int)($_SESSION['user_id'] ?? 0);
+
+        header('Content-Type: application/json');
+
+        $album = $this->albumManager->findById($albumId);
+
+        if (!$album || $album->getUserId() !== $currentUserId) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Non autorisé.']);
+            exit;
+        }
+
+        if ($targetUserId === $currentUserId) {
+            echo json_encode(['success' => false, 'message' => 'Vous ne pouvez pas vous retirer vous-même.']);
+            exit;
+        }
+
+        $this->albumManager->removeInvitation($albumId, $targetUserId);
+        
+        echo json_encode(['success' => true]);
+        exit;
+    }
+
+    public function leaveAlbum(): void {
         $jsonInput = file_get_contents('php://input');
         $data = json_decode($jsonInput, true);
         
         $albumId = (int)($data['album_id'] ?? 0);
-        $userId = (int)($data['user_id'] ?? 0);
+        $userId = (int)($_SESSION['user_id'] ?? 0);
 
         header('Content-Type: application/json');
 
-        if ($this->albumManager->isOwner($albumId, $_SESSION['user_id'])) {
+        if ($albumId > 0 && $userId > 0) {
             $this->albumManager->removeInvitation($albumId, $userId);
             echo json_encode(['success' => true]);
         } else {
-            http_response_code(403);
-            echo json_encode(['success' => false, 'message' => 'Accès refusé']);
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Erreur de paramètres']);
         }
         exit;
     }

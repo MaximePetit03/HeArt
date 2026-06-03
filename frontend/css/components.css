@@ -1,3 +1,4 @@
+/* --- LAYOUT & CONTAINERS --- */
 .albums-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -38,6 +39,8 @@
   color: #64748b;
   margin-bottom: 1rem;
 }
+
+/* --- BADGES --- */
 .badge {
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
@@ -51,18 +54,16 @@
   background: #dcfce7;
   color: #166534;
 }
-
 .badge-private {
   background: #fee2e2;
   color: #991b1b;
 }
-
 .badge-restricted {
   background: #fef3c7;
   color: #92400e;
 }
 
-/*bouton suppr*/
+/* --- BOUTONS --- */
 .albums-grid > div {
   position: relative;
 }
@@ -89,6 +90,7 @@
   color: white;
 }
 
+/* --- SECTION FILTRE & PHOTOS --- */
 .card-footer-info {
   display: flex;
   flex-wrap: wrap;
@@ -97,16 +99,15 @@
   margin-top: 1rem;
 }
 
-.js-album-card .hidden {
+.js-album-card .hidden,
+.hidden {
   display: none !important;
 }
 
-/* Section du filtre */
 .filter-section {
   margin: 2rem 0;
   text-align: center;
 }
-
 .filter-section p {
   margin-bottom: 1rem;
   color: var(--text-muted);
@@ -140,29 +141,10 @@
   user-select: none;
 }
 
-.filter-radio span:hover {
-  background-color: var(--border);
-  border-color: var(--border-strong);
-}
-
 .filter-radio input:checked + span {
   background-color: var(--red);
   color: var(--white);
   border-color: var(--red);
-}
-
-.filter-radio input:focus + span {
-  box-shadow: 0 0 0 3px var(--red-ring);
-}
-
-/* Conteneur des tags dans la carte */
-.album-tags-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 .badge-tag {
@@ -175,7 +157,23 @@
   transition: all var(--transition);
 }
 
-.card:hover .badge-tag {
+/* Bouton Quitter */
+.btn-leave {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--red);
+  padding: 0.5rem 1rem;
+  border-radius: var(--rounded-full);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-leave:hover {
   background-color: var(--red);
   color: var(--white);
   border-color: var(--red);

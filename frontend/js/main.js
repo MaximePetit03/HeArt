@@ -8,7 +8,10 @@ import { CommentView } from "./views/CommentView.js";
 document.addEventListener("DOMContentLoaded", () => {
   console.log("HeArt Application Initialized");
 
-  if (document.querySelector(".js-albums-grid")) {
+  if (
+    document.querySelector(".js-photos-grid") &&
+    document.querySelector(".js-filter-tags")
+  ) {
     const albumView = new AlbumView();
     albumView.init();
   }

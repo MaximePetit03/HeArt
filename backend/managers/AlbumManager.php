@@ -182,6 +182,12 @@ class AlbumManager extends AbstractManager {
         return $result && (int)$result['user_id'] === $userId;
     }
 
+    public function isGuest(int $albumId, int $userId): bool {
+        $query = $this->db->prepare("SELECT COUNT(*) FROM album_invitation WHERE album_id = ? AND user_id = ?");
+        $query->execute([$albumId, $userId]);
+        return (int)$query->fetchColumn() > 0;
+    }
+
     public function isInvited(int $albumId, int $userId): bool {
         $query = $this->db->prepare("SELECT COUNT(*) FROM album_invitation
                 WHERE album_id = :album_id AND user_id = :user_id");
@@ -203,9 +209,16 @@ class AlbumManager extends AbstractManager {
     }
 
     public function addInvitation(int $albumId, int $userId): void {
+        error_log("DEBUG: Tentative d'insertion invitation - Album: $albumId, User: $userId");
+
         $query = $this->db->prepare("INSERT INTO album_invitation (album_id, user_id, permission)
                                     VALUES (:album_id, :user_id, 'view')");
-        $query->execute(['album_id' => $albumId, 'user_id' => $userId]);
+        
+        try {
+            $query->execute(['album_id' => $albumId, 'user_id' => $userId]);
+        } catch (PDOException $e) {
+            error_log("DEBUG: ERREUR SQL - " . $e->getMessage());
+        }
     }
 
     public function removeInvitation(int $albumId, int $userId): void {
