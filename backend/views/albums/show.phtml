@@ -2,6 +2,10 @@
     <header class="album-page-header">
         <h1 class="large-title">Album : <?= htmlspecialchars($album->getTitle()) ?></h1>
 
+        <?php if ($album->getDescription()): ?>
+        <p class="album-description"><?= nl2br(htmlspecialchars($album->getDescription())) ?></p>
+        <?php endif; ?>
+
         <?php if ($isGuest): ?>
         <button type="button" class="btn-leave" data-album-id="<?= (int)$album->getId() ?>">
             <i class="fa-solid fa-right-from-bracket"></i> Quitter l'album
