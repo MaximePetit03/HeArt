@@ -82,6 +82,18 @@ class AlbumManager extends AbstractManager {
                 ORDER BY RAND()";
         return $this->db->query($sql)->fetchAll(PDO::FETCH_CLASS, 'Album');
     }
+
+    public function updateAlbum(int $id, string $title, string $description, string $visibility): void {
+        $query = $this->db->prepare("UPDATE album SET title = :title,
+            description = :description, visibility = :visibility WHERE id = :id");
+        
+        $query->execute([
+            'title'       => $title,
+            'description' => $description,
+            'visibility'  => $visibility,
+            'id'          => $id
+        ]);
+    }
     
     public function create(string $title, ?string $description, string $visibility, int $userId): int {
         $sharingToken = bin2hex(random_bytes(16));

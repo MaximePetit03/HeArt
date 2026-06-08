@@ -1,38 +1,72 @@
-/* ==========================================================================
-   1. LAYOUT & CONTAINER
-   ========================================================================== */
+.large-title-input {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-dark, #333);
+  background-color: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--rounded-md);
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 5px;
+  transition: all 0.2s;
+}
+
+.large-title-input:hover,
+.large-title-input:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-ring);
+  background-color: var(--white);
+}
+
+.album-description-input {
+  width: 100%;
+  max-width: 600px;
+  margin: 15px auto 30px auto;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--rounded-md);
+  padding: 15px;
+  font-size: 1rem;
+  color: var(--text-muted, #666);
+  resize: vertical;
+  display: block;
+  min-height: 100px;
+  transition: border-color 0.2s;
+}
+
+.album-description-input:focus,
+.album-description-input:hover {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-ring);
+  background-color: var(--white);
+}
+
 .edit-album-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
 }
 
-/* Style du Header (Inspiré de l'accueil) */
 .album-page-header {
   text-align: center;
   margin-bottom: 40px;
 }
 
-.album-page-header .large-title {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--text-dark);
-  margin-bottom: 10px;
-}
-
-.album-page-header .album-meta {
+.album-meta {
   font-size: 1.1rem;
-  color: var(--text-muted);
+  color: var(--text-muted, #666);
+  margin-bottom: 20px;
 }
 
 .album-page-header .username {
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--text-dark, #333);
 }
 
-/* Alignement du titre et du bouton de partage */
 .album-header {
   display: flex;
+  flex-direction: column; /* Centré verticalement pour le titre */
   align-items: center;
   gap: 15px;
   justify-content: center;
@@ -72,7 +106,7 @@
 }
 
 /* ==========================================================================
-   2. ZONE D'UPLOAD COMPACTE (STYLE DISCRET AU-DESSUS)
+   3. ZONE D'UPLOAD COMPACTE
    ========================================================================== */
 .upload-section {
   display: flex;
@@ -88,8 +122,8 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 500px; /* Largeur restreinte et élégante */
-  padding: 30px 20px; /* Hauteur réduite, fini le gros bloc de 400px */
+  max-width: 500px;
+  padding: 30px 20px;
   border: 2px dashed #dadada;
   border-radius: 20px;
   background-color: #fafafa;
@@ -98,19 +132,11 @@
   transition: all 0.25s ease;
 }
 
-/* États Hover et Drag-over */
 .upload-dropzone:hover {
-  border-color: #e60023; /* Rouge Pinterest au survol */
+  border-color: #e60023;
   background-color: #fef5f6;
 }
 
-.upload-dropzone.drag-over {
-  border-color: #e60023;
-  background-color: rgba(230, 0, 35, 0.06);
-  transform: scale(1.02);
-}
-
-/* Contenu intérieur du bouton d'upload */
 .dropzone-content {
   display: flex;
   flex-direction: column;
@@ -119,7 +145,7 @@
 }
 
 .plus-icon {
-  font-size: 2rem; /* Taille d'icône harmonieuse */
+  font-size: 2rem;
   color: #e60023;
   margin-bottom: 5px;
 }
@@ -133,7 +159,6 @@
 .dropzone-subtitle {
   font-size: 0.9rem;
   color: var(--text-muted);
-  max-width: 350px;
 }
 
 .dropzone-muted {

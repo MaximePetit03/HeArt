@@ -137,6 +137,13 @@
   }
 }
 
+@media (max-width: 600px) {
+  .album-description {
+    font-size: 0.95rem;
+    padding: 0 15px;
+  }
+}
+
 /* 3. MOBILES (< 480px) */
 @media (max-width: 480px) {
   .photos-grid,

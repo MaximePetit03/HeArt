@@ -256,9 +256,16 @@ class AlbumController extends AbstractController {
 
         if (!empty($_POST)) {
             $albumId = (int)($_POST['album_id'] ?? 0);
+            $title = trim($_POST['title'] ?? '');
+            $description = trim($_POST['description'] ?? '');
             $visibility = $_POST['visibility'] ?? 'public';
 
-            $this->albumManager->updateVisibility($albumId, $visibility);
+            if (empty($title)) {
+                $title = "Sans titre";
+            }
+
+            $this->albumManager->updateAlbum($albumId, $title, $description, $visibility);
+            
             $this->albumManager->removeTagsFromAlbum($albumId);
             
             if (!empty($_POST['tags'])) {

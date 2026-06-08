@@ -1,49 +1,52 @@
 <section class="edit-album-container js-edit-album-page" data-album-id="<?= (int)$album->getId() ?>"
     data-current-user-id="<?= (int)$_SESSION['user_id'] ?>">
 
-    <header class="album-page-header">
-        <div class="album-header">
-            <h1 class="large-title">Modifier : <?= htmlspecialchars($album->getTitle()) ?></h1>
-
-            <div id="share-container" class="<?= $album->getVisibility() === 'restricted' ? '' : 'hidden' ?>">
-                <button type="button" id="btn-copy-link" class="btn-share" data-album-id="<?= (int)$album->getId() ?>">
-                    <i class="fa-solid fa-copy"></i> Copier le lien
-                </button>
-                <input type="text" id="share-link-input">
-            </div>
-        </div>
-        <p class="album-meta">Par <span class="username"><?= htmlspecialchars($album->getUsername()) ?></span></p>
-        <div class="upload-section">
-            <input type="file" id="js-upload-input" class="js-photo-upload-input" name="photos[]" multiple
-                accept="image/jpeg, image/png, image/webp" style="display: none;">
-
-            <button type="button" class="upload-dropzone js-upload-dropzone" aria-describedby="upload-instructions">
-                <div class="dropzone-content" id="upload-instructions">
-                    <i class="fa-solid fa-cloud-arrow-up plus-icon" aria-hidden="true"></i>
-                    <p class="dropzone-title">Glissez vos images ici</p>
-                    <p class="dropzone-subtitle">ou <strong>parcourez</strong> vos fichiers locaux</p>
-                    <p class="dropzone-muted">Formats acceptés : JPG, JPEG, PNG, WEBP</p>
-                </div>
-            </button>
-        </div>
-    </header>
-
     <form action="<?= BASE_URL ?>/albums/update" method="POST">
         <input type="hidden" name="album_id" value="<?= (int)$album->getId() ?>">
 
+        <header class="album-page-header">
+            <div class="album-header">
+                <input type="text" name="title" class="large-title-input"
+                    value="<?= htmlspecialchars($album->getTitle()) ?>" required>
+
+                <div id="share-container" class="<?= $album->getVisibility() === 'restricted' ? '' : 'hidden' ?>">
+                    <button type="button" id="btn-copy-link" class="btn-share"
+                        data-album-id="<?= (int)$album->getId() ?>">
+                        <i class="fa-solid fa-copy"></i> Copier le lien
+                    </button>
+                    <input type="text" id="share-link-input">
+                </div>
+            </div>
+
+            <p class="album-meta">Par <span class="username"><?= htmlspecialchars($album->getUsername()) ?></span></p>
+
+            <textarea name="description" class="album-description-input"
+                placeholder="Ajoutez une description à votre album..."><?= htmlspecialchars($album->getDescription()) ?></textarea>
+
+            <div class="upload-section">
+                <input type="file" id="js-upload-input" class="js-photo-upload-input" name="photos[]" multiple
+                    accept="image/jpeg, image/png, image/webp" style="display: none;">
+
+                <button type="button" class="upload-dropzone js-upload-dropzone" aria-describedby="upload-instructions">
+                    <div class="dropzone-content" id="upload-instructions">
+                        <i class="fa-solid fa-cloud-arrow-up plus-icon" aria-hidden="true"></i>
+                        <p class="dropzone-title">Glissez vos images ici</p>
+                        <p class="dropzone-subtitle">ou <strong>parcourez</strong> vos fichiers locaux</p>
+                        <p class="dropzone-muted">Formats acceptés : JPG, JPEG, PNG, WEBP</p>
+                    </div>
+                </button>
+            </div>
+        </header>
+
         <div class="form-row">
             <div class="album-visibility-selector">
-                <label for="album-visibility">Visibilité de l'album :</label>
+                <label for="album-visibility">Visibilité :</label>
                 <select name="visibility" id="album-visibility" class="js-change-album-visibility">
-                    <option value="public" <?= $album->getVisibility() === 'public' ? 'selected' : '' ?>>
-                        Public
-                    </option>
-                    <option value="private" <?= $album->getVisibility() === 'private' ? 'selected' : '' ?>>
-                        Privé
+                    <option value="public" <?= $album->getVisibility() === 'public' ? 'selected' : '' ?>>Public</option>
+                    <option value="private" <?= $album->getVisibility() === 'private' ? 'selected' : '' ?>>Privé
                     </option>
                     <option value="restricted" <?= $album->getVisibility() === 'restricted' ? 'selected' : '' ?>>
-                        Restreint
-                    </option>
+                        Restreint</option>
                 </select>
 
                 <button type="button" id="btn-manage-access" style="display: none; margin-top: 10px;"
@@ -53,7 +56,7 @@
             </div>
 
             <div class="album-visibility-selector">
-                <label for="tags">Tags de l'album :</label>
+                <label for="tags">Tags :</label>
                 <select name="tags[]" id="tags" multiple class="form-control">
                     <?php foreach ($allTags as $tag): ?>
                     <option value="<?= $tag->getId() ?>"
@@ -63,26 +66,19 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-
-
         </div>
 
         <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
     </form>
-    </header>
 
     <dialog class="access-modal modal-dialog">
         <article class="modal-content">
             <header>
                 <h3>Gestion des accès restreints</h3>
             </header>
-
             <div class="js-access-modal-content"></div>
-
             <footer>
-                <button type="button" class="js-close-access-modal btn-primary">
-                    Fermer
-                </button>
+                <button type="button" class="js-close-access-modal btn-primary">Fermer</button>
             </footer>
         </article>
     </dialog>
@@ -92,22 +88,19 @@
             <?php foreach ($photos as $photo): ?>
             <div class="photo-card" data-photo-id="<?= (int)$photo->getId() ?>">
                 <img src="/uploads/albums/<?= htmlspecialchars($photo->getFilename()) ?>" alt="file" loading="lazy">
-
                 <div class="photo-actions">
-                    <button type="button" class="open-tags js-open-tags" data-photo-id="<?= (int)$photo->getId() ?>">
-                        <i class="fa-solid fa-tag"></i>
-                    </button>
-                    <button type="button" class="btn-toggle-visibility" data-photo-id="<?= (int)$photo->getId() ?>">
-                        <i class="fa-solid <?= $photo->isVisible() ? 'fa-eye' : 'fa-eye-slash' ?>"></i>
-                    </button>
-                    <button type="button" class="btn-delete-photo" data-photo-id="<?= (int)$photo->getId() ?>">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
+                    <button type="button" class="open-tags js-open-tags" data-photo-id="<?= (int)$photo->getId() ?>"><i
+                            class="fa-solid fa-tag"></i></button>
+                    <button type="button" class="btn-toggle-visibility" data-photo-id="<?= (int)$photo->getId() ?>"><i
+                            class="fa-solid <?= $photo->isVisible() ? 'fa-eye' : 'fa-eye-slash' ?>"></i></button>
+                    <button type="button" class="btn-delete-photo" data-photo-id="<?= (int)$photo->getId() ?>"><i
+                            class="fa-solid fa-trash"></i></button>
                 </div>
             </div>
             <?php endforeach; ?>
         </div>
     </div>
+
     <div id="tag-modal" class="tag-modal modal-overlay">
         <div class="modal-content">
             <h3>Choisir des tags</h3>
@@ -118,8 +111,5 @@
 </section>
 
 <script id="all-tags-data" type="application/json">
-<?= json_encode(array_map(fn($t) => [
-        'id' => $t->getId(),
-        'name' => $t->getName()
-    ], $allTags)) ?>
+<?= json_encode(array_map(fn($t) => ['id' => $t->getId(), 'name' => $t->getName()], $allTags)) ?>
 </script>
