@@ -57,3 +57,8 @@ Le projet respecte les principes de la Programmation Orientée Objet (POO) de bo
    git clone [https://gitlab.com/votre-nom/app-photo-album.git](https://gitlab.com/votre-nom/app-photo-album.git)
    cd app-photo-album
    ```
+
+## Documentation
+
+- [Guide d'utilisation](docs/USER.md)
+- [Documentation technique](docs/TECHNICAL.md)
