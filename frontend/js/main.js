@@ -16,6 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
     albumView.init();
   }
 
+  if (document.querySelector(".js-albums-grid")) {
+    const albumFilter = new AlbumView();
+    albumFilter.initFilter(document.querySelectorAll(".js-album-card"));
+  }
+
   if (document.querySelector(".js-title-field")) {
     const albumCreateView = new AlbumCreateView();
     albumCreateView.init();

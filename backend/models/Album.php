@@ -26,7 +26,7 @@ class Album extends AbstractModel {
     }
 
     public function getTitle(): string {
-        return (string)$this->title;
+        return $this->title;
     }
 
     public function setTitle(string $title): void {

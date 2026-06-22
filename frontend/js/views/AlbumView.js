@@ -2,25 +2,32 @@ export class AlbumView {
   constructor() {
     this.filterContainer = document.querySelector(".js-filter-tags");
     this.photosGrid = document.querySelector(".js-photos-grid");
+    this.albumsGrid = document.querySelector(".js-albums-grid");
+
     this.photoItems = document.querySelectorAll(".js-photo-item");
+    this.albumItems = document.querySelectorAll(".js-album-card");
     this.btnLeave = document.querySelector(".btn-leave");
   }
 
   init() {
-    if (!this.filterContainer || !this.photosGrid) return;
+    if (!this.filterContainer) return;
 
-    this.initFilter();
+    if (this.photosGrid) {
+      this.initFilter(this.photoItems);
+    } else if (this.albumsGrid) {
+      this.initFilter(this.albumItems);
+    }
 
     if (this.btnLeave) {
       this.initLeaveAlbum();
     }
   }
 
-  initFilter() {
+  initFilter(items = this.photoItems) {
     this.filterContainer.addEventListener("change", (e) => {
       const selectedTagId = e.target.value;
 
-      this.photoItems.forEach((item) => {
+      items.forEach((item) => {
         const itemTags = item.dataset.tags ? item.dataset.tags.split(",") : [];
 
         if (selectedTagId === "all" || itemTags.includes(selectedTagId)) {

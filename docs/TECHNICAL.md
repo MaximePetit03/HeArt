@@ -1,6 +1,6 @@
-# ⚙️ Documentation Technique - Projet Heart
+# Documentation Technique - Projet Heart
 
-Cette application est un gestionnaire d'albums photo développé en architecture **MVC (Model-View-Controller)**, respectant les principes de la **Programmation Orientée Objet (POO)**.
+Cette application est un gestionnaire d'albums photo développé en architecture **MVC (Model-View-Controller)**, respectant les principes de la **Programmation Orientée Objet**.
 
 ## 1. Architecture du Projet
 
